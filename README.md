@@ -9,3 +9,8 @@ pip install -r requirements.txt
 cd .\shop\
 
 python manage.py runserver
+
+
+При додаванні нових пакетів в venv 
+
+pip freeze > requirements.txt
