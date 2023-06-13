@@ -14,99 +14,99 @@ from django.apps import apps
 # pip install psycopg2
 
 
-# class Category(models.Model):
+class Category(models.Model):
 
-#     class Meta:
+    class Meta:
 
-#         db_table = "category"
+        db_table = "category"
 
-#     name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
 
-#     description = models.CharField(max_length=100)
+    description = models.CharField(max_length=100)
 
-#     def __str__(self):
+    def __str__(self):
 
-#         return self.name
-
-
-# class Product(models.Model):
-
-#     class Meta:
-
-#         db_table = "products"
-
-#     name = models.CharField(max_length=100)
-
-#     description = models.CharField(max_length=100)
-
-#     price = models.DecimalField(max_digits=10, decimal_places=2)
-
-#     category = models.ForeignKey(Category, on_delete=models.RESTRICT)
+        return self.name
 
 
-# def __str__(self):
+class Product(models.Model):
 
-#     return f"{self.name} {self.description} {self.price} {self.catedory}"
+    class Meta:
+
+        db_table = "products"
+
+    name = models.CharField(max_length=100)
+
+    description = models.CharField(max_length=100)
+
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    category = models.ForeignKey(Category, on_delete=models.RESTRICT)
 
 
-# @receiver(post_migrate)
-# def populate_data(sender, **kwargs):
+def __str__(self):
 
-#     if sender.name == 'shop':
+    return f"{self.name} {self.description} {self.price} {self.catedory}"
 
-#         Category = apps.get_model('shop', 'Category')
 
-#         Product = apps.get_model('shop', 'Product')
+@receiver(post_migrate)
+def populate_data(sender, **kwargs):
 
-#         categories = [
+    if sender.name == 'shop':
 
-#             {'name': 'Category 1', 'description': 'Description 1'},
+        Category = apps.get_model('shop', 'Category')
 
-#             {'name': 'Category 2', 'description': 'Description 2'},
+        Product = apps.get_model('shop', 'Product')
 
-#             {'name': 'Category 3', 'description': 'Description 3'},
+        categories = [
 
-#         ]
+            {'name': 'Category 1', 'description': 'Description 1'},
 
-#         for category_data in categories:
+            {'name': 'Category 2', 'description': 'Description 2'},
 
-#             category = Category(
+            {'name': 'Category 3', 'description': 'Description 3'},
 
-#                 name=category_data['name'], description=category_data['description'])
+        ]
 
-#             category.save()
+        for category_data in categories:
 
-#         category_objects = Category.objects.all()
+            category = Category(
 
-#         products = [
+                name=category_data['name'], description=category_data['description'])
 
-#             {'name': 'Product 1', 'description': 'Description 1',
+            category.save()
 
-#                 'price': 10.0, 'category': category_objects[0]},
+        category_objects = Category.objects.all()
 
-#             {'name': 'Product 2', 'description': 'Description 2',
+        products = [
 
-#                 'price': 20.0, 'category': category_objects[1]},
+            {'name': 'Product 1', 'description': 'Description 1',
 
-#             {'name': 'Product 3', 'description': 'Description 3',
+                'price': 10.0, 'category': category_objects[0]},
 
-#                 'price': 30.0, 'category': category_objects[2]},
+            {'name': 'Product 2', 'description': 'Description 2',
 
-#         ]
+                'price': 20.0, 'category': category_objects[1]},
 
-#         for product_data in products:
+            {'name': 'Product 3', 'description': 'Description 3',
 
-#             product = Product(
+                'price': 30.0, 'category': category_objects[2]},
 
-#                 name=product_data['name'],
+        ]
 
-#                 description=product_data['description'],
+        for product_data in products:
 
-#                 price=product_data['price'],
+            product = Product(
 
-#                 category=product_data['category']
+                name=product_data['name'],
 
-#             )
+                description=product_data['description'],
 
-#             product.save()
+                price=product_data['price'],
+
+                category=product_data['category']
+
+            )
+
+            product.save()
 
