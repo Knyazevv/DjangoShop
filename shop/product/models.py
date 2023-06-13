@@ -1,7 +1,6 @@
 from django.db import models
 
 from django.shortcuts import render
-# Create your views here.
 from django.db.models.signals import post_migrate
 from django.dispatch import receiver
 from django.apps import apps

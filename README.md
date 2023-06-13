@@ -14,3 +14,5 @@ python manage.py runserver
 При додаванні нових пакетів в venv 
 
 pip freeze > requirements.txt
+
+pip install django_compressor
