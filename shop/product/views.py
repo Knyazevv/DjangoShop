@@ -2,14 +2,14 @@ from django.shortcuts import render
 
 
 def index(request):
-    return render(request, 'product/index.html')
+    return render(request, 'pages/index.html')
 
 
 def shop(request):
-    return render(request, 'product/shop.html')
+    return render(request, 'pages/shop.html')
 
 def cart(request):
-    return render(request, 'product/cart.html')
+    return render(request, 'pages/cart.html')
 
 
 def checkout(request):
@@ -21,4 +21,4 @@ def contact(request):
 
 
 def detail(request):
-    return render(request, 'product/detail.html')
+    return render(request, 'pages/detail.html')
