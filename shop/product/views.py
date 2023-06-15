@@ -1,12 +1,23 @@
 from django.shortcuts import render
-
+from . models import  Product, Category
 
 def index(request):
-    return render(request, 'pages/index.html')
+    products = Product.objects.order_by('name')
+    
+    context = {
+        "products": products
+    }
+    return render(request, 'pages/index.html', context)
 
 
 def shop(request):
-    return render(request, 'pages/shop.html')
+    products = Product.objects.order_by('name')
+    
+    context = {
+        "products": products
+    }
+    
+    return render(request, 'pages/shop.html', context)
 
 def cart(request):
     return render(request, 'pages/cart.html')
