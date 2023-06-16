@@ -1,7 +1,4 @@
-{% load compress %} 
-{% load static %}
-{% get_static_prefix as STATIC_PRFIX %}
-
+{% load compress %} {% load static %} {% get_static_prefix as STATIC_PRFIX %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -27,7 +24,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
       rel="stylesheet"
     />
-
+    {% compress css %}
     <!-- Libraries Stylesheet -->
     <link href="/static/lib/animate/animate.min.css" rel="stylesheet" />
     <link
@@ -37,21 +34,12 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+    {% endcompress %}
   </head>
 
   <body>
-
-    {% include 'partials/_topbar.html' %}
-    {% include 'partials/_navbar.html' %}
-    {% comment %} {% include 'partials/_carousel.html' %} {% endcomment %}
-    {% block content %} {% endblock %}
-    
-    
-    {% include 'partials/_footer.html' %}
-
-
-
-
+    {% include 'partials/_topbar.html' %} {% include 'partials/_navbar.html' %}
+    {%block content %} {% endblock %} {% include 'partials/_footer.html' %}
 
     <!-- Back to Top -->
     <a href="#" class="btn btn-primary back-to-top"
