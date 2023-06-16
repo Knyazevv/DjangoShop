@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from . models import Product, Category
 from functools import wraps
 
@@ -41,3 +41,18 @@ def contact(request, context):
 @context_data
 def detail(request, context):
     return render(request, 'pages/detail.html', context)
+
+
+@context_data
+def products_by_category(request, category_id, context):
+    category = get_object_or_404(Category, id=category_id)
+    products = Product.objects.filter(category=category).order_by('name')
+    categories = Category.objects.order_by('name')
+    
+    context = {
+        'category': category,
+        'categories':categories,
+        'products': products,
+    }
+
+    return render(request, 'pages/products_by_category.html', context)

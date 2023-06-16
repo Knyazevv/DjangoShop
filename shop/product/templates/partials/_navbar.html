@@ -19,7 +19,7 @@
       >
         <div class="navbar-nav w-100">
           {% if categories %} {% for category in categories %}
-          <a href="" class="nav-item nav-link">{{ category.name }}</a>
+          <a href="{% url 'products_by_category' category.id %}" class="nav-item nav-link">{{ category.name }}</a>
           {% endfor %} {% endif %}
         </div>
       </nav>
