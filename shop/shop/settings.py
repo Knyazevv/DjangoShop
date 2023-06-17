@@ -137,6 +137,8 @@ STATICFILES_FINDERS = (
 )
 
 COMPRESS_ROOT = os.path.join(BASE_DIR, 'shop/static')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
+MEDIA_URL = '/uploads/'
 COMPRESS_ENABLED = True
 
 # Default primary key field type

@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.urls import path, include
 from product import views
+from django.conf.urls.static import static 
+from django.conf import settings
 
 
 urlpatterns = [
@@ -12,5 +14,7 @@ urlpatterns = [
     path('category/<int:category_id>/', views.products_by_category, name='products_by_category'),
     path('detail/<int:product_id>/', views.detail, name='detail'), 
     path('cart/', views.cart, name='cart'),
-    path('products/', include('product.urls'))
-]
+    path('products/', include('product.urls')),
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
