@@ -18,7 +18,8 @@
         style="width: calc(100% - 30px); z-index: 999"
       >
         <div class="navbar-nav w-100">
-          {% if categories %} {% for category in categories %}
+          {% if categories %} 
+          {% for category in categories %}
           <a href="{% url 'products_by_category' category.id %}" class="nav-item nav-link">{{ category.name }}</a>
           {% endfor %} {% endif %}
         </div>
@@ -51,23 +52,17 @@
               >Home</a
             >
             <a href="{% url 'shop' %}" class="nav-item nav-link">Shop</a>
-            <a href="{% url 'detail' %}" class="nav-item nav-link"
-              >Shop Detail</a
-            >
+            {% comment %} <a href="{% url 'detail' %}" class="nav-item nav-link">Shop Detail</a> {% endcomment %}
             <div class="nav-item dropdown">
               <a
                 href="#"
                 class="nav-link dropdown-toggle"
-                data-toggle="dropdown"
-                >Pages <i class="fa fa-angle-down mt-1"></i
+                data-toggle="dropdown">Pages <i class="fa fa-angle-down mt-1"></i
               ></a>
               <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
-                <a href="{% url 'cart' %}" class="dropdown-item"
-                  >Shopping Cart</a
+                <a href="{% url 'cart' %}" class="dropdown-item" >Shopping Cart</a
                 >
-                <a href="{% url 'checkout' %}" class="dropdown-item"
-                  >Checkout</a
-                >
+                <a href="{% url 'checkout' %}" class="dropdown-item">Checkout</a>
               </div>
             </div>
             <a href="{% url 'contact' %}" class="nav-item nav-link">Contact</a>

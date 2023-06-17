@@ -27,10 +27,6 @@ def shop(request, context):
     return render(request, 'pages/shop.html', context)
 
 @context_data
-def cart(request, context):
-    return render(request, 'pages/cart.html', context)
-
-@context_data
 def checkout(request, context):
     return render(request, 'pages/checkout.html', context)
 
@@ -38,10 +34,15 @@ def checkout(request, context):
 def contact(request, context):
     return render(request, 'pages/contact.html', context)
 
-@context_data
-def detail(request, context):
-    return render(request, 'pages/detail.html', context)
+# @context_data
+# def detail(request, context):
+#     return render(request, 'pages/detail.html', context)
 
+
+@context_data
+def cart(request, context):
+   
+    return render(request, 'pages/cart.html', context)
 
 @context_data
 def products_by_category(request, category_id, context):
@@ -56,3 +57,14 @@ def products_by_category(request, category_id, context):
     }
 
     return render(request, 'pages/products_by_category.html', context)
+
+
+@context_data
+def detail(request, product_id ,context):
+    products = get_object_or_404(Product, id=product_id)      
+    categories = Category.objects.order_by('name')
+    context = {       
+        'categories':categories,
+        'products': products,
+    }
+    return render(request, 'pages/detail.html', context)

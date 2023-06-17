@@ -188,7 +188,10 @@
                             </div>
 
                             <div class="text-center py-4">
-                                <a class="h3 text-decoration-none text-truncate" href="">{{product.name}}</a>
+                                {% comment %} {% for product in products %} {% endcomment %}
+                                <a class="h3 text-decoration-none text-truncate" href="{% url 'detail' product.id %}">{{product.name}}</a>
+                                {% comment %} {% endfor %}  {% endcomment %}
+
                                 {% comment %} <h6>{{product.category}}</h6> {% endcomment %}
                                 <h6 class="text-muted ml-2">{{product.category}}</h6>
                                 <div class="d-flex align-items-center justify-content-center mt-2">
