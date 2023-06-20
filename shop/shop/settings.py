@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'product',
     'compressor',
     'shop',
+    'users',
 
 ]
 
@@ -140,7 +141,7 @@ COMPRESS_ROOT = os.path.join(BASE_DIR, 'shop/static')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 MEDIA_URL = '/uploads/'
 COMPRESS_ENABLED = True
-
+AUTH_USER_MODEL = 'users.User'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
