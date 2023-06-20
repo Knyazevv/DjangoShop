@@ -211,7 +211,13 @@
           <div class="product-item bg-light mb-4">
             <div class="product-img position-relative overflow-hidden">
               
-              <img class="img-fluid w-100" src="/static/img/product-1.jpg" alt=""/>
+              {% comment %} <img class="img-fluid w-100" src="/static/img/product-1.jpg" alt=""/> {% endcomment %}
+                <div>                 
+                  <img class="w-100 h-100"  src="{{product.photo_0.url}}" alt="Image">                  
+                </div>
+
+
+
               <div class="product-action">
                 <a class="btn btn-outline-dark btn-square" href=""
                   ><i class="fa fa-shopping-cart"></i
@@ -288,15 +294,14 @@
         </h2>
 
         <div class="row px-xl-5">
-          {% if products %} {% for product in products %}
+          {% if products %}
+          {% for product in products %}
           <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
             <div class="product-item bg-light mb-4">
               <div class="product-img position-relative overflow-hidden">
-                <img
-                  class="img-fluid w-100"
-                  src="/static/img/product-1.jpg"
-                  alt=""
-                />
+                <div>                 
+                  <img class="w-100 h-100"  src="{{product.photo_0.url}}" alt="Image">                  
+                </div>
                 <div class="product-action">
                   <a class="btn btn-outline-dark btn-square" href=""
                     ><i class="fa fa-shopping-cart"></i
@@ -335,7 +340,8 @@
               </div>
             </div>
           </div>
-          {% endfor %} {% endif %}
+          {% endfor %} 
+          {% endif %}
         </div>
         <!-- Products End -->
 
