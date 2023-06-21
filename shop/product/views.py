@@ -34,14 +34,9 @@ def checkout(request, context):
 def contact(request, context):
     return render(request, 'pages/contact.html', context)
 
-# @context_data
-# def detail(request, context):
-#     return render(request, 'pages/detail.html', context)
-
 
 @context_data
-def cart(request, context):
-   
+def cart(request, context):   
     return render(request, 'pages/cart.html', context)
 
 @context_data
@@ -55,7 +50,6 @@ def products_by_category(request, category_id, context):
         'categories':categories,
         'products': products,
     }
-
     return render(request, 'pages/products_by_category.html', context)
 
 
