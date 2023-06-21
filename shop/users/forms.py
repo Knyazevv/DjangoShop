@@ -16,7 +16,9 @@ class UserLoginForm(AuthenticationForm):
         fields = ('username', 'password')
 
 
-class UserCreationForm(UserCreationForm):
+
+
+class UserRegisterForm(UserCreationForm):
     image = forms.ImageField(required=False)
     is_verified_email = forms.BooleanField(required=False)
     email = forms.EmailField(
