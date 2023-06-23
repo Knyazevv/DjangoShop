@@ -7,15 +7,16 @@ class UserLoginForm(AuthenticationForm):
     username = forms.CharField(widget=forms.TextInput(attrs={
         'class': 'form-control', 'placeholder': 'Username'
     }))
-    password = forms.CharField(widget=forms.TextInput(attrs={
-        'class': 'form-control', 'placeholder': 'Password', type: 'Password'
-    }))
+    password = forms.CharField(
+        required=True,
+        widget=forms.PasswordInput(
+            attrs={"class": "form-control", "placeholder": "Enter password"}
+        ),
+    )
 
     class Meta:
         model = User
         fields = ('username', 'password')
-
-
 
 
 class UserRegisterForm(UserCreationForm):
@@ -24,8 +25,7 @@ class UserRegisterForm(UserCreationForm):
     email = forms.EmailField(
         required=True,
         widget=forms.EmailInput(
-            attrs={"class": "form-control", "placeholder": "Enter email"}
-        ),
+            attrs={"class": "form-control", "placeholder": "Enter email"}),
     )
     username = forms.CharField(
         required=True,
@@ -48,5 +48,5 @@ class UserRegisterForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('username', 'password1', 'password2', 'image', 'is_verified_email')
-
+        fields = ('email', 'username', 'password1',
+                  'password2', 'image', 'is_verified_email')

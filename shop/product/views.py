@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from . models import Product, Category
 from functools import wraps
+from users.models import User
+
 
 
 
@@ -9,9 +11,14 @@ def context_data(func):
     def wrapper(request, *args, **kwargs):
         products = Product.objects.order_by('name')
         categories = Category.objects.order_by('name')
+        user = User.objects.order_by('username')
+       
         context = {
             "products": products,
-            'categories': categories
+            'categories': categories,
+            'users': user,
+            
+            
         }
         return func(request, *args, context=context, **kwargs)
     return wrapper

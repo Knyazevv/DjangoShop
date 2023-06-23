@@ -1,0 +1,10 @@
+<!-- templates/allauth/account/login.html -->
+
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Login with Google</h1>
+  <p>Please click the button below to login with your Google account.</p>
+
+  <a href="{% url 'socialaccount_login' 'google' %}" class="btn btn-primary">Login with Google</a>
+{% endblock %}

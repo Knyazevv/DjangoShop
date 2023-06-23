@@ -38,13 +38,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'product',
     'compressor',
     'shop',
     'users',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 
 ]
-
+SITE_ID = 1
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -137,11 +142,52 @@ STATICFILES_FINDERS = (
     'compressor.finders.CompressorFinder',
 )
 
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.ukr.net'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'confirmationofregistration@ukr.net'
+EMAIL_HOST_PASSWORD = 'RxFucyKX5nqimoOk'
+EMAIL_USE_TLS = True  # Используйте True, если сервер использует TLS
+DEFAULT_FROM_EMAIL = 'confirmationofregistration@ukr.net'
+
+
+
 COMPRESS_ROOT = os.path.join(BASE_DIR, 'shop/static')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 MEDIA_URL = '/uploads/'
 COMPRESS_ENABLED = True
 AUTH_USER_MODEL = 'users.User'
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': '978591487833-6plmggo4aui0vsm4bo75uea18jftkam8.apps.googleusercontent.com',
+            'secret': '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',
+            'key': ''
+        },
+        'SCOPE': [
+            'profile',
+            'email'
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online'
+        }
+    }
+}
+
+LOGIN_URL = '/users/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+
+
+
+
+
+
+#https://console.cloud.google.com/apis/credentials?project=vocal-marking-383521
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 

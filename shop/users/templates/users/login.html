@@ -1,5 +1,5 @@
 {% load compress %} {% load static %} {% get_static_prefix as STATIC_PREFIX %}
-
+{% load socialaccount %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -9,8 +9,13 @@
     <meta content="Free HTML Templates" name="keywords" />
     <meta content="Free HTML Templates" name="description" />
     <!-- Favicon -->
-
+    <meta
+      name="google-signin-client_id"
+      content="978591487833-6plmggo4aui0vsm4bo75uea18jftkam8.apps.googleusercontent.com"
+    />
+    {% comment %}
     <link href="/stattic/img/favicon.ico" rel="icon" />
+    {% endcomment %}
     <!-- Google Web Fonts -->
 
     <link rel="preconnect" href="https://fonts.gstatic.com" />
@@ -90,10 +95,32 @@
                     <a href="#!" class="text-white"
                       ><i class="fab fa-twitter fa-lg mx-4 px-2"></i
                     ></a>
-
-                    <a href="#!" class="text-white"
-                      ><i class="fab fa-google fa-lg"></i
-                    ></a>
+                    <a href="{% provider_login_url 'google' %}" class="text-white"
+                    ><i class="fab fa-google fa-lg"></i
+                  ></a>
+                    {% comment %} <div id="my-signin2"></div>
+                    <script>
+                      function onSuccess(googleUser) {
+                        console.log(
+                          "Logged in as: " +
+                            googleUser.getBasicProfile().getName()
+                        );
+                      }
+                      function onFailure(error) {
+                        console.log(error);
+                      }
+                      function renderButton() {
+                        gapi.signin2.render("my-signin2", {
+                          scope: "profile email",
+                          width: 240,
+                          height: 50,
+                          longtitle: true,
+                          theme: "dark",
+                          onsuccess: onSuccess,
+                          onfailure: onFailure,
+                        });
+                      }
+                    </script> {% endcomment %}
                   </div>
                 </div>
 
@@ -111,5 +138,10 @@
         </div>
       </div>
     </section>
+    <script
+      src="https://apis.google.com/js/platform.js?onload=renderButton"
+      async
+      defer
+    ></script>
   </body>
 </html>
