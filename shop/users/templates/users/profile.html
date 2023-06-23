@@ -1,7 +1,6 @@
-{% extends "base.html" %} 
-{% block content %} 
-<div class="grid p-10 grid-cols-1 lg:grid-cols-3 sm:grid-cols-1">
-  <div class="rounded shadow-lg">
+{% extends "base.html" %} {% block content %}
+<div class="container d-flex justify-content-center align-items-center">
+  <div class="">
     <div>
       {% if user.profile %}
       <img src="{{ user.profile.image.url }}" />
@@ -19,11 +18,17 @@
   </div>
 </div>
 
-<div class="grid p-10">
-  <form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Зберегти зміни</button>
-  </form>
+<div class="container d-flex justify-content-center align-items-center>
+
+<div class="container d-flex justify-content-center">
+  <div class="p-10" id="form-container">
+    <form id="my-form" method="POST">
+      {% csrf_token %} {{ form.as_p }}
+      <button type="submit">Зберегти зміни</button>
+    </form>
+  </div>
 </div>
+</div>
+
+
 {% endblock content %}
