@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
-from users.models import User
+from users.models import CustomUser
 
 
 class UserLoginForm(AuthenticationForm):
@@ -15,7 +15,7 @@ class UserLoginForm(AuthenticationForm):
     )
 
     class Meta:
-        model = User
+        model = CustomUser
         fields = ('username', 'password')
 
 
@@ -47,12 +47,12 @@ class UserRegisterForm(UserCreationForm):
     )
 
     class Meta:
-        model = User
+        model = CustomUser
         fields = ('email', 'username', 'password1',
-                  'password2', 'image', 'is_verified_email')
+                  'password2', 'image', 'is_verified_email', 'image')
 
 
 class UserEditForm(forms.ModelForm):
     class Meta:
-        model = User
-        fields = ['username', 'email', 'first_name', 'last_name']
+        model = CustomUser
+        fields = ['username', 'email', 'first_name', 'last_name', 'image']

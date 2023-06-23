@@ -1,16 +1,12 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %}
+{% block content %}
 <div class="container d-flex justify-content-center align-items-center">
-  <div class="">
-    <div>
-      {% if user.profile %}
-      <img src="{{ user.profile.image.url }}" />
-      {% endif %}
-    </div>
-    <div>
-      {% if user.image %}
-      <img src="{{ user.name }}" />
-      {% endif %}
-    </div>
+  <div>
+    {% if user.image %}
+    <img src="{{ user.image.url }}" alt="Profile Image" />
+    {% endif %}
+  </div>
+  <div>
     <h1 class="font-bold text-xl m-2">{{ user.username }}</h1>
     <h1 class="font-bold text-xl m-2">{{ user.email }}</h1>
     <h1 class="font-bold text-xl m-2">{{ user.first_name }}</h1>
@@ -18,17 +14,17 @@
   </div>
 </div>
 
-<div class="container d-flex justify-content-center align-items-center>
-
 <div class="container d-flex justify-content-center">
   <div class="p-10" id="form-container">
-    <form id="my-form" method="POST">
-      {% csrf_token %} {{ form.as_p }}
+    <form id="my-form" method="POST" enctype="multipart/form-data">
+      {% csrf_token %} 
+      {{ form.username }} {{ form.email }} {{ form.first_name }} {{ form.last_name }}
+      <div>
+        {{ form.image.label_tag }}
+        {{ form.image }}
+      </div>
       <button type="submit">Зберегти зміни</button>
     </form>
   </div>
 </div>
-</div>
-
-
 {% endblock content %}

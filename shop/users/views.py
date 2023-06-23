@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from users.models import User
+from users.models import CustomUser
 from django.shortcuts import redirect, render
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import login
@@ -137,7 +137,7 @@ def profile(request):
 
 
 def seller_profile(request, id):
-    seller = User.objects.get(id=id)
+    seller = CustomUser.objects.get(id=id)
 
     context = {
         'seller': seller
