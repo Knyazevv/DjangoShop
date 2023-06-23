@@ -2,6 +2,7 @@ from django.urls import path, include
 from .views import UserLoginView, UserRegisterView, EmailConfirmationSentView, UserConfirmEmailView, EmailConfirmedView,\
     EmailConfirmationFailedView
 from django.contrib.auth import views as auth_views
+from .views import profile, seller_profile
 
 
 
@@ -14,4 +15,6 @@ urlpatterns = [
     path('confirm-email-failed/', EmailConfirmationFailedView.as_view(), name='email_confirmation_failed'),
     path('accounts/', include('allauth.urls')),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path("profile/", profile, name="profile"),
+    path("sellerprofile/<int:id>/", seller_profile, name="sellerprofile"),
 ]
