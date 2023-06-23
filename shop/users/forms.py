@@ -50,3 +50,9 @@ class UserRegisterForm(UserCreationForm):
         model = User
         fields = ('email', 'username', 'password1',
                   'password2', 'image', 'is_verified_email')
+
+
+class UserEditForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name']

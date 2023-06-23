@@ -1,6 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.contrib.auth.models import Group, Permission
+from django import forms
+
 
 class User(AbstractUser):
     class Meta:
@@ -16,3 +18,4 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
+    

@@ -15,7 +15,7 @@ from users.mixins import UserIsNotAuthenticated
 from email.message import EmailMessage
 import smtplib
 from django.contrib.auth.decorators import login_required
-from .models import Profile
+from .forms import UserEditForm
 
 User = get_user_model()
 
@@ -125,13 +125,15 @@ class EmailConfirmationFailedView(TemplateView):
 
 @login_required
 def profile(request):
-    if request.method == "POST":
-        contact_number = request.POST.get("number")
-        image = request.FILES["upload"]
-        user = request.user
-        profile = Profile(user=user, contact_number=contact_number, image=image)
-        profile.save()
-    return render(request, "users/profile.html")
+    if request.method == 'POST':
+        form = UserEditForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = UserEditForm(instance=request.user)
+    
+    return render(request, 'users/profile.html', {'form': form})
 
 
 def seller_profile(request, id):
