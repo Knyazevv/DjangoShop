@@ -1,9 +1,7 @@
-
-<!-- Libraries Stylesheet -->
-
-
-
+{% extends 'layouts/base.html' %}
 {% load static %}
+
+{% block breadcrumbs %}{% endblock breadcrumbs %}
 
 {% block content %}
 
@@ -18,7 +16,7 @@
             <div class="col-9">
               <h3 class="f-w-300 d-flex align-items-center m-b-0"><i
                   class="feather icon-arrow-up text-c-green f-30 m-r-10"></i>$
-                99999999.95</h3>
+                249.95</h3>
             </div>
 
             <div class="col-3 text-right">
@@ -79,7 +77,6 @@
       </div>
     </div>
     <!--[ year  sales section ] end-->
-
     <!--[ Recent Users ] start-->
     <div class="col-xl-8 col-md-6">
       <div class="card Recent-Users">
@@ -90,7 +87,7 @@
           <div class="table-responsive">
             <table class="table table-hover">
               <tbody>
-                {% comment %} <tr class="unread">
+                <tr class="unread">
                   <td><img class="rounded-circle" style="width:40px;" src="{% static 'assets/images/user/avatar-1.jpg' %}"
                       alt="activity-user">
                   </td>
@@ -105,7 +102,7 @@
                   <td><a href="#!" class="label theme-bg2 text-white f-12">Reject</a><a href="#!"
                       class="label theme-bg text-white f-12">Approve</a>
                   </td>
-                </tr> {% endcomment %}
+                </tr>
                 <tr class="unread">
                   <td><img class="rounded-circle" style="width:40px;" src="{% static 'assets/images/user/avatar-2.jpg' %}"
                       alt="activity-user">
@@ -421,7 +418,7 @@
               </tr>
             </thead>
             <tbody>
-             <tr>
+              <tr>
                 <td>
                   <h6 class="m-0"><img class="rounded-circle m-r-10" style="width:40px;"
                       src="{% static 'assets/images/user/avatar-1.jpg' %}" alt="activity-user">Ida Jorgensen</h6>
@@ -437,12 +434,12 @@
                 </td>
                 <td class="text-right"><i class="fas fa-circle text-c-green f-10"></i>
                 </td>
-              </tr> 
+              </tr>
 
               <tr>
                 <td>
                   <h6 class="m-0"><img class="rounded-circle  m-r-10" style="width:40px;"
-                      src="{% static 'assets/images/user/avatar-2.jpg' %}" alt="activity-user">Albert Andersen1111</h6>
+                      src="{% static 'assets/images/user/avatar-2.jpg' %}" alt="activity-user">Albert Andersen</h6>
                 </td>
                 <td>
                   <h6 class="m-0">Jumps over the lazy</h6>

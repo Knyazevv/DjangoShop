@@ -32,7 +32,7 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
-    'admin_datta.apps.AdminDattaConfig',
+    'admin_datta',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
