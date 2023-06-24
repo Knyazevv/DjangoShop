@@ -2,8 +2,8 @@
 {% block content %}
 <div class="container d-flex justify-content-center align-items-center">
   <div>
-    {% if user.photo_0 %}
-    <img src="{{ user.photo_0.url }}" alt="Profile Image" />
+    {% if user.image %}
+    <img src="{{ user.image.url }}" alt="Profile Image" />
     {% endif %}
   </div>
   <div>
@@ -20,8 +20,8 @@
       {% csrf_token %} 
       {{ form.username }} {{ form.email }} {{ form.first_name }} {{ form.last_name }}
       <div>
-        {% comment %} {{ form.image.label_tag }} {% endcomment %}
-        {{ form.photo_0 }}
+        {{ form.image.label_tag }}
+        {{ form.image }}
       </div>
       <button type="submit">Зберегти зміни</button>
     </form>
