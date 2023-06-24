@@ -187,7 +187,7 @@
         {% comment %} <a href="{% url 'cart' product.id %}" class="nav-item nav-link">{{ product.name }}</a> {% endcomment %}
         <div class="cat-item d-flex align-items-center mb-4">
           <div class="overflow-hidden" style="width: 100px; height: 100px">
-            <img class="img-fluid" src="/static/img/cat-1.jpg" alt="" />
+            <img class="img-fluid" src="{{category.photo_0.url}}" alt="" />
           </div>
           <div class="flex-fill pl-3">
             <h6>{{category.name}}</h6>
