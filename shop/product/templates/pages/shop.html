@@ -185,7 +185,7 @@
 
                                     
                                    
-                                    <form action="{% url 'cart' %}" method="post">
+                                    <form action="{% url 'add_to_cart' %}" method="post">
                                         {% csrf_token %}
                                         <input type="hidden" name="user_id" value="{{ user.id }}">
                                         <input type="hidden" name="product_id" value="{{ product.id }}">

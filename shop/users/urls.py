@@ -20,7 +20,8 @@ urlpatterns = [
     path("profile/", profile, name="profile"),
     path("sellerprofile/<int:id>/", seller_profile, name="sellerprofile"),
     path('profile', profile, name='profile'),
-    path('cart/', views.add_to_cart, name='cart'),
+    # path('cart/', views.add_to_cart, name='cart'),
+    path('add_to_cart/', views.add_to_cart, name='add_to_cart'),
     
 ]
 

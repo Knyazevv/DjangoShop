@@ -65,6 +65,7 @@ def contact(request, context):
 
 @context_data
 def cart(request, context):   
+   
     return render(request, 'pages/cart.html', context)
 
 @context_data
