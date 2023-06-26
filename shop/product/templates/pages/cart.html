@@ -1,4 +1,36 @@
 {% extends 'base.html' %} {% block content %}
+{% comment %} {% if user %}
+<h1>User ID: {{ user.id }}</h1>
+{% for user_id in user_id %}
+<h1>User ID from user_id: {{ user_id.user_id }}</h1>
+{%endfor%}
+{% endif %} {% endcomment %}
+
+{% comment %} {% if user %}
+   <h1>User ID: {{ user.id }}</h1> 
+  {% for user_id in user_id %}
+     <h1>User ID from user_id: {{ user_id }}</h1> 
+    {% if user.id == user_id.user_id %}
+      <p>{{ user.id }}</p>
+      <p>{{ user_id.user_id }}</p>
+    {% else %}
+      <p>ВИВОДИТЬ ЛИШНЄ</p>
+    {% endif %}
+  {% endfor %}
+{% endif %} {% endcomment %}
+
+
+
+
+
+      
+
+
+
+
+
+
+
 
 <!-- Breadcrumb Start -->
 <div class="container-fluid">
@@ -31,9 +63,13 @@
           </tr>
         </thead>
         <tbody class="align-middle">
+        
+
           {% if products %}
            {% for product in products %}
+           {% comment %} {% for order_basket in product.order_basket_set.all %} {% endcomment %}
            {% for order_basket in product.order_basket_set.all %}
+          {% if order_basket.user == user %}
           <tr>
             <td class="align-middle">
               <img
@@ -70,7 +106,9 @@
               </button>
             </td>
           </tr>
-          {% endfor %} {% endfor %} {% endif %}
+          {% endif %}  {% endfor %} {% endfor %} {% endif %}
+
+        
         </tbody>
       </table>
     </div>
