@@ -182,12 +182,24 @@
                                     <img class="w-100 h-100"  src="{{product.photo_0.url}}" alt="Image">                  
                                   </div>
                                 <div class="product-action">
-                                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
+
+                                    
+                                   
+                                    <form action="{% url 'cart' %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="user_id" value="{{ user.id }}">
+                                        <input type="hidden" name="product_id" value="{{ product.id }}">
+                                        <button class="btn btn-outline-dark btn-square" type="submit"><i class="fa fa-shopping-cart"></i></button>
+                                    </form>
+                                   
+                                   
+                                    {% comment %} <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a> {% endcomment %}
                                     <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
                                     <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a>
                                     <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
                                 </div>
                             </div>
+                            {% comment %} <div><p>{{ product.id }}</p></div> {% endcomment %}
 
                             <div class="text-center py-4">
                                 {% comment %} {% for product in products %} {% endcomment %}

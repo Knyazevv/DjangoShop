@@ -3,6 +3,8 @@ from .views import UserLoginView, UserRegisterView, EmailConfirmationSentView, U
     EmailConfirmationFailedView
 from django.contrib.auth import views as auth_views
 from .views import profile, seller_profile
+from users import views
+from . import views
 
 
 
@@ -18,4 +20,7 @@ urlpatterns = [
     path("profile/", profile, name="profile"),
     path("sellerprofile/<int:id>/", seller_profile, name="sellerprofile"),
     path('profile', profile, name='profile'),
+    path('cart/', views.add_to_cart, name='cart'),
+    
 ]
+

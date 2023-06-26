@@ -31,14 +31,19 @@
           </tr>
         </thead>
         <tbody class="align-middle">
-            {% if products %}
-            {% for product in products %}
+          {% if products %}
+           {% for product in products %}
+           {% for order_basket in product.order_basket_set.all %}
           <tr>
             <td class="align-middle">
-              <img src="{{product.photo_0.url}}" alt="img" style="width: 50px" />
-              Product Name
+              <img
+                src="{{ order_basket.product.photo_0.url }}"
+                alt="img"
+                style="width: 50px"
+              />
+              {{ order_basket.product.name }}
             </td>
-            <td class="align-middle">{{product.price}}</td>
+            <td class="align-middle">{{ order_basket.product.price }}</td>
             <td class="align-middle">
               <div class="input-group quantity mx-auto" style="width: 100px">
                 <div class="input-group-btn">
@@ -58,18 +63,14 @@
                 </div>
               </div>
             </td>
-
-            {% comment %} має бути сума пробуктів {% endcomment %}
-            <td class="align-middle">{{product.price}}</td>
+            <td class="align-middle">{{ order_basket.product.price }}</td>
             <td class="align-middle">
               <button class="btn btn-sm btn-danger">
                 <i class="fa fa-times"></i>
               </button>
             </td>
           </tr>
-          {% endfor %} 
-          {% endif %}
-
+          {% endfor %} {% endfor %} {% endif %}
         </tbody>
       </table>
     </div>
