@@ -17,7 +17,7 @@ import smtplib
 from django.contrib.auth.decorators import login_required
 from .forms import UserEditForm
 from users.models import Order_basket
-
+from .forms import UserLoginForm
 
 
 
@@ -28,6 +28,50 @@ class UserLoginView(LoginView):
     template_name = 'users/login.html'
     form_class = UserLoginForm
     title = "Login"
+
+
+
+# class UserRegisterView(UserIsNotAuthenticated, CreateView):
+   
+#     form_class = UserRegisterForm
+#     success_url = reverse_lazy('index')
+#     template_name = 'users/register.html'
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['title'] = 'Реєстрація на сайте'
+#         return context
+
+#     def form_valid(self, form):
+#         user = form.save(commit=False)
+#         user.is_active = False
+#         user.save()
+#         # відправка листів з токеном
+#         token = default_token_generator.make_token(user)
+#         uid = urlsafe_base64_encode(force_bytes(user.pk))
+#         activation_url = reverse_lazy('confirm_email', kwargs={
+#                                       'uidb64': uid, 'token': token})
+       
+#         current_site = f"127.0.0.1:8000/"
+#         from_email = 'Confirmation of Registration <confirmationofregistration@ukr.net>'
+     
+#         to_email = [user.email]
+#         message_body = f'Пожалуйста, перейдите по следующей ссылке, чтобы подтвердить свой адрес электронной почты: http://{current_site}{activation_url}'
+
+#         msg = EmailMessage()
+#         msg['From'] = from_email
+#         msg['To'] = to_email
+#         msg.set_content(message_body)
+
+#         server = smtplib.SMTP_SSL('smtp.ukr.net', 2525)
+#         server.login("confirmationofregistration@ukr.net", "RxFucyKX5nqimoOk")
+#         server.send_message(msg)
+
+#         server.quit()
+
+#         # Перенаправлення користувача
+#         return redirect('email_confirmation_sent')
+
 
 
 
@@ -51,12 +95,10 @@ class UserRegisterView(UserIsNotAuthenticated, CreateView):
         uid = urlsafe_base64_encode(force_bytes(user.pk))
         activation_url = reverse_lazy('confirm_email', kwargs={
                                       'uidb64': uid, 'token': token})
-        # current_site = Site.objects.get_current().domain
+       
         current_site = f"127.0.0.1:8000/"
-        # print(f"Activation URL: http://{current_site}{activation_url}")
-
         from_email = 'Confirmation of Registration <confirmationofregistration@ukr.net>'
-        # to_email = 'Recipient Name <recipient_list>'
+     
         to_email = [user.email]
         message_body = f'Пожалуйста, перейдите по следующей ссылке, чтобы подтвердить свой адрес электронной почты: http://{current_site}{activation_url}'
 
@@ -73,6 +115,35 @@ class UserRegisterView(UserIsNotAuthenticated, CreateView):
 
         # Перенаправлення користувача
         return redirect('email_confirmation_sent')
+
+
+
+
+
+
+
+
+
+def register_view(request):
+    if request.method == 'POST':
+        form = UserRegisterForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            
+            return redirect('login')  # або перенаправлення на іншу сторінку після реєстрації
+    else:
+        form = UserRegisterForm()
+
+    context = {'form': form}
+    return render(request, 'register.html', context)
+
+
+
+
+
+
+
+
 
 
 class UserConfirmEmailView(View):
@@ -168,7 +239,16 @@ def add_to_cart(request):
     return redirect('/cart/')
 
 
+def login_view(request):
+    if request.method == 'POST':
+        form = UserLoginForm(request, data=request.POST)
+        if form.is_valid():        
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+          
+    else:
+        form = UserLoginForm(request)
 
-
-
+    context = {'form': form}
+    return render(request, 'login.html', context)
 
