@@ -231,19 +231,27 @@
 
                
 
+   
                 <div class="col-12">
                     <nav>
                       <ul class="pagination justify-content-center">
-                        <li class="page-item disabled"><a class="page-link" href="#">Previous</span></a></li>
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                        <li class='page-item {% if not products.has_previous %}disabled{% endif %}'><a class='page-link' {% if products.has_previous %}href="?page={{ products.previous_page_number }}{% for key,value in request.GET.items %}{% endfor %}"{% endif %}>Previous</a></li>
+                        {% for i in products.paginator.page_range %}    
+                            {% if i == products.number %}
+                            <li class="page-item active"><a class="page-link" href="?page={{i}}{% for key,value in request.GET.items %}{% endfor %}">{{i}}</a></li>
+                            {% else %}
+                            <li class="page-item"><a class="page-link"  href="?page={{i}}{% for key,value in request.GET.items %}{% endfor %}">{{i}}</a></li>
+                            {% endif %}
+                        {% endfor %}             
+                        <li class="page-item {% if not products.has_next %}disabled{% endif %}"><a class="page-link" {% if products.has_next %}href="?page={{ products.next_page_number }}{% for key,value in request.GET.items %}{% endfor %}"{% endif %}>Next</a></li>
                       </ul>
                     </nav>
                 </div>
             </div>
         </div>
+
+
+
         <!-- Shop Product End -->
         </div>
     </div>
@@ -257,23 +265,3 @@
    
 
 
-
-    <!-- Back to Top -->
-    {% comment %} <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
-
-
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-    <script src="/static/lib/easing/easing.min.js"></script>
-    <script src="/static/lib/owlcarousel/owl.carousel.min.js"></script>
-
-    <!-- Contact Javascript File -->
-    <script src="/static/mail/jqBootstrapValidation.min.js"></script>
-    <script src="/static/mail/contact.js"></script>
-
-    <!-- Template Javascript -->
-    <script src="/static/js/main.js"></script>
-</body>
-
-</html> {% endcomment %}

@@ -2,19 +2,28 @@ from django.shortcuts import render, get_object_or_404
 from . models import Product, Category
 from functools import wraps
 from users.models import CustomUser, Order_basket
-
+from django.core.paginator import Paginator
 
 
 
 def context_data(func):
     @wraps(func)
-    def wrapper(request, *args, **kwargs):
+    def wrapper(request, *args, **kwargs):        
+        
         products = Product.objects.order_by('name')
         categories = Category.objects.order_by('name')
         user = CustomUser.objects.order_by('username')
         user_id = Order_basket.objects.order_by('id')
+        
+        paginator = Paginator(products, 20 )
+        page_number = request.GET.get('page')
+
+        page = paginator.get_page(page_number)
+        
         context = {
-            "products": products,
+            # "products": products,
+            "products": page,
+            # "page": page,
             'categories': categories,
             'users': user,
             'user_id':user_id,
