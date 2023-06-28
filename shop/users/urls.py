@@ -15,7 +15,7 @@ urlpatterns = [
     path('confirm-email/<str:uidb64>/<str:token>/', UserConfirmEmailView.as_view(), name='confirm_email'),
     path('email-confirmed/', EmailConfirmedView.as_view(), name='email_confirmed'),
     path('confirm-email-failed/', EmailConfirmationFailedView.as_view(), name='email_confirmation_failed'),
-    path('accounts/', include('allauth.urls')),
+
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path("profile/", profile, name="profile"),
     path("sellerprofile/<int:id>/", seller_profile, name="sellerprofile"),
