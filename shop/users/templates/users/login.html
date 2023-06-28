@@ -1,5 +1,5 @@
 {% load compress %} {% load static %} {% get_static_prefix as STATIC_PREFIX %}
-{% load socialaccount %}
+{% load socialaccount %} 
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -122,6 +122,7 @@
                     <a href="#!" class="text-white"
                       ><i class="fab fa-twitter fa-lg mx-4 px-2"></i
                     ></a>
+                    {% csrf_token %}
                     <a
                       href="{% provider_login_url 'google' %}"
                       class="text-white"
