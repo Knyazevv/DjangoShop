@@ -1,31 +1,4 @@
 {% extends 'base.html' %} {% block content %}
-{% comment %} {% if user %}
-<h1>User ID: {{ user.id }}</h1>
-{% for user_id in user_id %}
-<h1>User ID from user_id: {{ user_id.user_id }}</h1>
-{%endfor%}
-{% endif %} {% endcomment %}
-
-{% comment %} {% if user %}
-   <h1>User ID: {{ user.id }}</h1> 
-  {% for user_id in user_id %}
-     <h1>User ID from user_id: {{ user_id }}</h1> 
-    {% if user.id == user_id.user_id %}
-      <p>{{ user.id }}</p>
-      <p>{{ user_id.user_id }}</p>
-    {% else %}
-      <p>ВИВОДИТЬ ЛИШНЄ</p>
-    {% endif %}
-  {% endfor %}
-{% endif %} {% endcomment %}
-
-
-
-
-
-      
-
-
 
 
 
@@ -65,21 +38,18 @@
         <tbody class="align-middle">
         
 
-          {% if products %}
-           {% for product in products %}
-           {% comment %} {% for order_basket in product.order_basket_set.all %} {% endcomment %}
-           {% for order_basket in product.order_basket_set.all %}
-          {% if order_basket.user == user %}
-          <tr>
+         
+          {% for basket in baskets %}
+            <tr>
             <td class="align-middle">
               <img
-                src="{{ order_basket.product.photo_0.url }}"
+                src="{{ basket.product.photo_0.url }}"
                 alt="img"
                 style="width: 50px"
               />
-              {{ order_basket.product.name }}
+              {{ basket.product.name }}
             </td>
-            <td class="align-middle">{{ order_basket.product.price }}</td>
+            <td class="align-middle">{{ basket.product.price }}</td>
             <td class="align-middle">
               <div class="input-group quantity mx-auto" style="width: 100px">
                 <div class="input-group-btn">
@@ -90,7 +60,7 @@
                 <input
                   type="text"
                   class="form-control form-control-sm bg-secondary border-0 text-center"
-                  value="1"
+                  value="{{ basket.quantity }}"
                 />
                 <div class="input-group-btn">
                   <button class="btn btn-sm btn-primary btn-plus">
@@ -99,32 +69,22 @@
                 </div>
               </div>
             </td>
-            <td class="align-middle">{{ order_basket.product.price }}</td>
+            <td class="align-middle">{{ basket.sum }}</td>
             <td class="align-middle">
               <button class="btn btn-sm btn-danger">
                 <i class="fa fa-times"></i>
               </button>
             </td>
           </tr>
-          {% endif %}  {% endfor %} {% endfor %} {% endif %}
-
-        
+          {% endfor %}          
         </tbody>
       </table>
     </div>
+
+
+
     <div class="col-lg-4">
-      <form class="mb-30" action="">
-        <div class="input-group">
-          <input
-            type="text"
-            class="form-control border-0 p-4"
-            placeholder="Coupon Code"
-          />
-          <div class="input-group-append">
-            <button class="btn btn-primary">Apply Coupon</button>
-          </div>
-        </div>
-      </form>
+      {% for basket in baskets %}
       <h5 class="section-title position-relative text-uppercase mb-3">
         <span class="bg-secondary pr-3">Cart Summary</span>
       </h5>
@@ -142,16 +102,16 @@
         <div class="pt-2">
           <div class="d-flex justify-content-between mt-2">
             <h5>Total</h5>
-            <h5>$160</h5>
+            <h5>{{ basket.sum }}</h5>
           </div>
           <button class="btn btn-block btn-primary font-weight-bold my-3 py-3">
             Proceed To Checkout
           </button>
         </div>
       </div>
+      {% endfor %}
     </div>
-  </div>
-</div>
+    </div>
 <!-- Cart End -->
 
-{% endblock %}
+{% endblock %} 

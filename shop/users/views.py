@@ -5,7 +5,6 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth import login
 from django.contrib.auth import get_user_model
 from users.forms import UserLoginForm
-from .forms import UserRegisterForm
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, View, TemplateView
 from django.contrib.auth.tokens import default_token_generator
@@ -15,10 +14,7 @@ from users.mixins import UserIsNotAuthenticated
 from email.message import EmailMessage
 import smtplib
 from django.contrib.auth.decorators import login_required
-from .forms import UserEditForm
-from users.models import Order_basket
-from .forms import UserLoginForm
-
+from .forms import UserEditForm, UserLoginForm, UserRegisterForm
 
 
 User = get_user_model()
@@ -30,9 +26,8 @@ class UserLoginView(LoginView):
     title = "Login"
 
 
-
 # class UserRegisterView(UserIsNotAuthenticated, CreateView):
-   
+
 #     form_class = UserRegisterForm
 #     success_url = reverse_lazy('index')
 #     template_name = 'users/register.html'
@@ -51,10 +46,10 @@ class UserLoginView(LoginView):
 #         uid = urlsafe_base64_encode(force_bytes(user.pk))
 #         activation_url = reverse_lazy('confirm_email', kwargs={
 #                                       'uidb64': uid, 'token': token})
-       
+
 #         current_site = f"127.0.0.1:8000/"
 #         from_email = 'Confirmation of Registration <confirmationofregistration@ukr.net>'
-     
+
 #         to_email = [user.email]
 #         message_body = f'Пожалуйста, перейдите по следующей ссылке, чтобы подтвердить свой адрес электронной почты: http://{current_site}{activation_url}'
 
@@ -73,10 +68,8 @@ class UserLoginView(LoginView):
 #         return redirect('email_confirmation_sent')
 
 
-
-
 class UserRegisterView(UserIsNotAuthenticated, CreateView):
-   
+
     form_class = UserRegisterForm
     success_url = reverse_lazy('index')
     template_name = 'users/register.html'
@@ -95,10 +88,10 @@ class UserRegisterView(UserIsNotAuthenticated, CreateView):
         uid = urlsafe_base64_encode(force_bytes(user.pk))
         activation_url = reverse_lazy('confirm_email', kwargs={
                                       'uidb64': uid, 'token': token})
-       
+
         current_site = f"127.0.0.1:8000/"
         from_email = 'Confirmation of Registration <confirmationofregistration@ukr.net>'
-     
+
         to_email = [user.email]
         message_body = f'Пожалуйста, перейдите по следующей ссылке, чтобы подтвердить свой адрес электронной почты: http://{current_site}{activation_url}'
 
@@ -117,33 +110,19 @@ class UserRegisterView(UserIsNotAuthenticated, CreateView):
         return redirect('email_confirmation_sent')
 
 
-
-
-
-
-
-
-
 def register_view(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            
-            return redirect('login')  # або перенаправлення на іншу сторінку після реєстрації
+
+            # або перенаправлення на іншу сторінку після реєстрації
+            return redirect('login')
     else:
         form = UserRegisterForm()
 
     context = {'form': form}
     return render(request, 'register.html', context)
-
-
-
-
-
-
-
-
 
 
 class UserConfirmEmailView(View):
@@ -174,15 +153,15 @@ class EmailConfirmationSentView(TemplateView):
 
 class EmailConfirmedView(TemplateView):
     template_name = 'users/email_confirmed.html'
-    
+
     def get_context_data(self, **kwargs):
         # Отримати екземпляр поточного користувача
         user = self.request.user
-        
+
         # Оновити значення is_verifaild_email
         user.is_verified_email = True
         user.save()
-        
+
         context = super().get_context_data(**kwargs)
         context['title'] = 'Ваш емейл адрес активовано'
         return context
@@ -197,7 +176,6 @@ class EmailConfirmationFailedView(TemplateView):
         return context
 
 
-
 @login_required
 def profile(request):
     if request.method == 'POST':
@@ -207,7 +185,7 @@ def profile(request):
             return redirect('profile')
     else:
         form = UserEditForm(instance=request.user)
-    
+
     return render(request, 'users/profile.html', {'form': form})
 
 
@@ -219,7 +197,6 @@ def seller_profile(request, id):
     }
 
     return render(request, 'users/sellerprofile.html', context)
-
 
 
 def add_to_cart(request):
@@ -242,13 +219,12 @@ def add_to_cart(request):
 def login_view(request):
     if request.method == 'POST':
         form = UserLoginForm(request, data=request.POST)
-        if form.is_valid():        
+        if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
-          
+
     else:
         form = UserLoginForm(request)
 
     context = {'form': form}
     return render(request, 'login.html', context)
-

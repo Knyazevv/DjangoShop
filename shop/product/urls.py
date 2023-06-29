@@ -1,9 +1,13 @@
 from django.urls import path, include
 from . import views
+from .views import add_to_cart
 
-urlpatterns = [
-    # path('', views.index, name="product"),
-    # path('<int:product_id>/', views.product, name="product"),
-    # path("search", views.search, name="name")
+app_name = 'products'
+
+urlpatterns = [ 
     path('users/', include('users.urls') , name='users'),
+    path('users/', include('users.urls'), name='users'),
+    path('baskets/add/<int:product_id>/',
+         add_to_cart, name='add_to_cart'),
+    
 ]

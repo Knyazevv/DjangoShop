@@ -1,7 +1,6 @@
 {% extends 'base.html' %} 
 {% block content %}
 
-
     <!-- Breadcrumb Start -->
     <div class="container-fluid">
         <div class="row px-xl-5">
@@ -179,27 +178,13 @@
                         <div class="product-item bg-light mb-4">
                             <div class="product-img position-relative overflow-hidden">
                                 <div>                 
-                                    <img class="w-75 h-75 mx-auto d-block" src="{{ product.photo_0.url }}" alt="Image">                  
-                                </div>
+                                    <img class="w-100 h-100"  src="{{product.photo_0.url}}" alt="Image">                  
+                                  </div>
                                 <div class="product-action">
-
-                                    
-                                   
-                                    <form action="{% url 'add_to_cart' %}" method="post">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="user_id" value="{{ user.id }}">
-                                        <input type="hidden" name="product_id" value="{{ product.id }}">
-                                        <button class="btn btn-outline-dark btn-square" type="submit"><i class="fa fa-shopping-cart"></i></button>
-                                    </form>
-                                   
-                                   
-                                    {% comment %} <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a> {% endcomment %}
-                                    <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
-                                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a>
-                                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
+                                <a href="{% url 'products:add_to_cart' product.id %}" class="btn btn-outline-dark btn-square"><i class="fa fa-shopping-cart"></i></a>                           
                                 </div>
                             </div>
-                            {% comment %} <div><p>{{ product.id }}</p></div> {% endcomment %}
+                        
 
                             <div class="text-center py-4">
                                 {% comment %} {% for product in products %} {% endcomment %}
@@ -229,29 +214,23 @@
                 {% endfor %}
                 {% endif %}
 
-               
-
-   
                 <div class="col-12">
                     <nav>
-                      <ul class="pagination justify-content-center">
-                        <li class='page-item {% if not products.has_previous %}disabled{% endif %}'><a class='page-link' {% if products.has_previous %}href="?page={{ products.previous_page_number }}{% for key,value in request.GET.items %}{% endfor %}"{% endif %}>Previous</a></li>
-                        {% for i in products.paginator.page_range %}    
-                            {% if i == products.number %}
-                            <li class="page-item active"><a class="page-link" href="?page={{i}}{% for key,value in request.GET.items %}{% endfor %}">{{i}}</a></li>
-                            {% else %}
-                            <li class="page-item"><a class="page-link"  href="?page={{i}}{% for key,value in request.GET.items %}{% endfor %}">{{i}}</a></li>
-                            {% endif %}
-                        {% endfor %}             
-                        <li class="page-item {% if not products.has_next %}disabled{% endif %}"><a class="page-link" {% if products.has_next %}href="?page={{ products.next_page_number }}{% for key,value in request.GET.items %}{% endfor %}"{% endif %}>Next</a></li>
-                      </ul>
+                        <ul class="pagination justify-content-center">
+                            <li class='page-item {% if not products.has_previous %}disabled{% endif %}'><a class='page-link' {% if products.has_previous %}href="?page={{ products.previous_page_number }}{% for key,value in request.GET.items %}{% endfor %}"{% endif %}>Previous</a></li>
+                                {% for i in products.paginator.page_range %}    
+                                    {% if i == products.number %}
+                                    <li class="page-item active"><a class="page-link" href="?page={{i}}{% for key,value in request.GET.items %}{% endfor %}">{{i}}</a></li>
+                                    {% else %}
+                                    <li class="page-item"><a class="page-link"  href="?page={{i}}{% for key,value in request.GET.items %}{% endfor %}">{{i}}</a></li>
+                                    {% endif %}
+                                {% endfor %}             
+                            <li class="page-item {% if not products.has_next %}disabled{% endif %}"><a class="page-link" {% if products.has_next %}href="?page={{ products.next_page_number }}{% for key,value in request.GET.items %}{% endfor %}"{% endif %}>Next</a></li>
+                        </ul>
                     </nav>
                 </div>
             </div>
         </div>
-
-
-
         <!-- Shop Product End -->
         </div>
     </div>
@@ -263,5 +242,4 @@
 
 
    
-
 

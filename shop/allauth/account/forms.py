@@ -594,7 +594,6 @@ class ResetPasswordForm(forms.Form):
         token_generator = kwargs.get("token_generator", default_token_generator)
 
         for user in users:
-
             temp_key = token_generator.make_token(user)
 
             # save it to the password reset model

@@ -1,8 +1,6 @@
 from django.db import models
-
-from django.shortcuts import render
+from users.models import CustomUser
 from django.db.models.signals import post_migrate
-from django.dispatch import receiver
 from django.apps import apps
 
 
@@ -43,6 +41,49 @@ class Product(models.Model):
 
 def __str__(self):
     return f"{self.name} {self.description} {self.price} {self.catedory}"
+
+
+class Basket(models.Model):
+    user = models.ForeignKey(
+        CustomUser, on_delete=models.CASCADE, blank=True, null=True)
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, blank=True, null=True)
+    quantity = models.PositiveIntegerField(default=0)
+    created_timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Basket for {self.user.username} | Product: {self.product.name}'
+
+    def sum(self):
+        return self.product.price * self.quantity
+
+    def get_json(self):
+        item = {
+            'product_name': self.product.name,
+            'quantity': self.quantity,
+            'price': float(self.product.price),
+            'sum': float(self.sum())
+        }
+        return item
+
+    @classmethod
+    def create_or_update(cls, product_id, user):
+        baskets = Basket.objects.filter(user=user, product_id=product_id)
+
+        if not baskets.exists():
+            obj = Basket.objects.create(
+                user=user, product_id=product_id, quantity=1)
+        else:
+            basket = baskets.first()
+            basket.quantity += 1
+            basket.save()
+            is_created = False
+            return basket, is_created
+
+
+
+
+
 
 
 # @receiver(post_migrate)
