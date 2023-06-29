@@ -5,6 +5,9 @@ from users.models import CustomUser
 from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.db.models import Sum
+
+
 
 def context_data(func):
     @wraps(func)
@@ -74,13 +77,17 @@ def detail(request, product_id ,context):
 
 
 
+@login_required
 def cart(request):
-    user = request.user 
-    baskets = Basket.objects.filter(user=user) 
-    
+    baskets = Basket.objects.filter(user=request.user)
+    total_sum = 0
+
+    for basket in baskets:
+        total_sum += basket.sum()
+
     context = {
-        
-        'baskets': baskets  
+        'baskets': baskets,
+        'total_sum': total_sum,
     }
     return render(request, 'pages/cart.html', context)
 
@@ -91,8 +98,12 @@ def add_to_cart(request, product_id):
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
+
 @login_required
 def remove_from_card(request, basket_id):
     basket = Basket.objects.get(id=basket_id)
     basket.delete()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+

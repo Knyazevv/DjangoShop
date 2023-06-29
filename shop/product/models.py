@@ -79,7 +79,9 @@ class Basket(models.Model):
             basket.save()
             is_created = False
             return basket, is_created
-
+        
+    def sum(self):
+        return self.product.price * self.quantity
 
 
 
