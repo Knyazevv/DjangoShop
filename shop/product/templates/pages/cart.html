@@ -51,9 +51,12 @@
             <td class="align-middle">
               <div class="input-group quantity mx-auto" style="width: 100px">
                 <div class="input-group-btn">
-                  <button class="btn btn-sm btn-primary btn-minus">
+
+
+                  <a href="{% url 'products:increase_quantity_minus' basket.id %}" class="btn btn-sm btn-primary btn-minus">
                     <i class="fa fa-minus"></i>
-                  </button>
+                </a>
+                  
                 </div>
                 <input
                   type="text"
@@ -61,9 +64,13 @@
                   value="{{ basket.quantity }}"
                 />
                 <div class="input-group-btn">
-                  <button class="btn btn-sm btn-primary btn-plus">
+
+                  <a href="{% url 'products:increase_quantity' basket.id %}" class="btn btn-sm btn-primary btn-plus">
                     <i class="fa fa-plus"></i>
-                  </button>
+                  </a>
+                
+                  
+
                 </div>
               </div>
             </td>

@@ -82,6 +82,16 @@ class Basket(models.Model):
         
     def sum(self):
         return self.product.price * self.quantity
+    
+    def increase_quantity(self):
+        self.quantity += 1
+        self.save()
+        
+    def increase_quantity_minus(self):
+        self.quantity -= 1
+        self.save()
+
+
 
 
 

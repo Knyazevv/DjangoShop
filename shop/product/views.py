@@ -106,4 +106,21 @@ def remove_from_card(request, basket_id):
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
+@login_required
+def increase_quantity(request, basket_id):
+        basket = Basket.objects.get(id=basket_id)
+        basket.quantity += 1
+        basket.save()
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
+
+@login_required
+def increase_quantity_minus(request, basket_id):
+    basket = Basket.objects.get(id=basket_id)
+    basket.quantity -= 1
+    if basket.quantity == 0:
+        basket.delete()
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    else:
+        basket.save()
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
