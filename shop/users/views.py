@@ -26,47 +26,6 @@ class UserLoginView(LoginView):
     title = "Login"
 
 
-# class UserRegisterView(UserIsNotAuthenticated, CreateView):
-
-#     form_class = UserRegisterForm
-#     success_url = reverse_lazy('index')
-#     template_name = 'users/register.html'
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['title'] = 'Реєстрація на сайте'
-#         return context
-
-#     def form_valid(self, form):
-#         user = form.save(commit=False)
-#         user.is_active = False
-#         user.save()
-#         # відправка листів з токеном
-#         token = default_token_generator.make_token(user)
-#         uid = urlsafe_base64_encode(force_bytes(user.pk))
-#         activation_url = reverse_lazy('confirm_email', kwargs={
-#                                       'uidb64': uid, 'token': token})
-
-#         current_site = f"127.0.0.1:8000/"
-#         from_email = 'Confirmation of Registration <confirmationofregistration@ukr.net>'
-
-#         to_email = [user.email]
-#         message_body = f'Пожалуйста, перейдите по следующей ссылке, чтобы подтвердить свой адрес электронной почты: http://{current_site}{activation_url}'
-
-#         msg = EmailMessage()
-#         msg['From'] = from_email
-#         msg['To'] = to_email
-#         msg.set_content(message_body)
-
-#         server = smtplib.SMTP_SSL('smtp.ukr.net', 2525)
-#         server.login("confirmationofregistration@ukr.net", "RxFucyKX5nqimoOk")
-#         server.send_message(msg)
-
-#         server.quit()
-
-#         # Перенаправлення користувача
-#         return redirect('email_confirmation_sent')
-
 
 class UserRegisterView(UserIsNotAuthenticated, CreateView):
 
@@ -199,21 +158,21 @@ def seller_profile(request, id):
     return render(request, 'users/sellerprofile.html', context)
 
 
-def add_to_cart(request):
-    # Отримати необхідні дані з запиту POST
-    user_id = request.POST.get('user_id')
-    product_id = request.POST.get('product_id')
+# def add_to_cart(request):
+#     # Отримати необхідні дані з запиту POST
+#     user_id = request.POST.get('user_id')
+#     product_id = request.POST.get('product_id')
 
-    # Отримати екземпляр CustomUser за допомогою ідентифікатора
-    CustomUser = get_user_model()
-    user = CustomUser.objects.get(id=user_id)
+#     # Отримати екземпляр CustomUser за допомогою ідентифікатора
+#     CustomUser = get_user_model()
+#     user = CustomUser.objects.get(id=user_id)
 
-    # Зберегти дані у таблиці Order
-    order = Order_basket(user=user, product_id=product_id)
-    order.save()
+#     # Зберегти дані у таблиці Order
+#     order = Basket(user=user, product_id=product_id)
+#     order.save()
 
-    # Перенаправити користувача до іншої сторінки
-    return redirect('/cart/')
+#     # Перенаправити користувача до іншої сторінки
+#     return redirect('/cart/')
 
 
 def login_view(request):
