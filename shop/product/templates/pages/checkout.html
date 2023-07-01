@@ -149,12 +149,7 @@
                         {% for basket in baskets %}
                         <div class="d-flex justify-content-between">
                             <p>{{ basket.product.name }}</p>
-<<<<<<< HEAD
-                            {% comment %} <p>{{ basket.quantity }}</p> {% endcomment %}
-                            <p>₴ {{ basket.sum }}</p>
-=======
                             <p>₴ {{ basket.product.price }}</p>
->>>>>>> a4524ddd8f1b68d849e1de6698ec84c8dcfe72c5
                         </div>
                         {%endfor%}
                    
