@@ -18,7 +18,7 @@ def context_data(func):
         products = Product.objects.order_by('name')
         categories = Category.objects.order_by('name')
         user = CustomUser.objects.order_by('username')
-<<<<<<< HEAD
+
         baskets = []  
 
         if request.user.is_authenticated:  
@@ -39,7 +39,7 @@ def context_data(func):
         for basket in baskets:
             total_sum += basket.sum()
 
-=======
+
         # baskets = Basket.objects.filter(user=request.user)
         paginator = Paginator(products, 20)
         page_number = request.GET.get('page')
@@ -49,21 +49,19 @@ def context_data(func):
         # total_sum = 0
         # for basket in baskets:
         #     total_sum += basket.sum()
-        
->>>>>>> a4524ddd8f1b68d849e1de6698ec84c8dcfe72c5
+
         context = {
             "products": page,
             'categories': categories,
             'users': user,
-<<<<<<< HEAD
+
             'baskets': baskets,
             'total_sum': total_sum,
             'total_quantity': total_quantity,
-=======
+
             #  'baskets': baskets,
             #  'total_sum': total_sum,
 
->>>>>>> a4524ddd8f1b68d849e1de6698ec84c8dcfe72c5
         }
         return func(request, *args, context=context, **kwargs)
     return wrapper
@@ -102,10 +100,6 @@ def checkout(request, context):
         return redirect('index')
     
     return render(request, 'pages/checkout.html', context)
-
-
-
-
 
 
 @context_data
