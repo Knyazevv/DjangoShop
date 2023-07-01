@@ -2,7 +2,7 @@ from django.db import models
 from users.models import CustomUser
 from django.db.models.signals import post_migrate
 from django.apps import apps
-
+from django.db.models import Sum
 
 # python manage.py makemigrations
 # python manage.py migrate
@@ -91,3 +91,6 @@ class Basket(models.Model):
         self.quantity -= 1
         self.save()
 
+    def get_total_quantity(self):
+        total_quantity = Basket.objects.filter(user=self.user).aggregate(total_quantity=Sum('quantity'))['total_quantity']
+        return total_quantity if total_quantity else 0

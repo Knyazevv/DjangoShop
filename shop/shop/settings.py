@@ -178,6 +178,9 @@ SOCIALACCOUNT_PROVIDERS = {
             'access_type': 'online'
         }
     },
+<<<<<<< HEAD
+  
+=======
    'facebook': {
         'SCOPE': ['email'],
         'METHOD': 'oauth2',
@@ -189,6 +192,7 @@ SOCIALACCOUNT_PROVIDERS = {
         'VERSION': 'v17.0',
        
     },
+>>>>>>> a4524ddd8f1b68d849e1de6698ec84c8dcfe72c5
   
 }
 
@@ -201,7 +205,6 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
-
 
 LOGIN_URL = '/users/login/'
 LOGIN_REDIRECT_URL = '/'

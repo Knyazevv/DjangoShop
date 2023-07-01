@@ -149,7 +149,12 @@
                         {% for basket in baskets %}
                         <div class="d-flex justify-content-between">
                             <p>{{ basket.product.name }}</p>
+<<<<<<< HEAD
+                            {% comment %} <p>{{ basket.quantity }}</p> {% endcomment %}
+                            <p>₴ {{ basket.sum }}</p>
+=======
                             <p>₴ {{ basket.product.price }}</p>
+>>>>>>> a4524ddd8f1b68d849e1de6698ec84c8dcfe72c5
                         </div>
                         {%endfor%}
                    
@@ -187,7 +192,12 @@
                                 <label class="custom-control-label" for="banktransfer">Bank Transfer</label>
                             </div>
                         </div>
-                        <button class="btn btn-block btn-primary font-weight-bold py-3">Place Order</button>
+                        {% comment %} <button class="btn btn-block btn-primary font-weight-bold py-3">Place Order</button> {% endcomment %}
+                        {% comment %} <a href="{% url 'index' %}" class="btn btn-block btn-primary font-weight-bold py-3">Place Order</a> {% endcomment %}
+                        <form method="POST" action="{% url 'checkout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-block btn-primary font-weight-bold py-3">Place Order</button>
+                        </form>
                     </div>
                 </div>
             </div>

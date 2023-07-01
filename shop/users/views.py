@@ -52,7 +52,7 @@ class UserRegisterView(UserIsNotAuthenticated, CreateView):
         from_email = 'Confirmation of Registration <confirmationofregistration@ukr.net>'
 
         to_email = [user.email]
-        message_body = f'Пожалуйста, перейдите по следующей ссылке, чтобы подтвердить свой адрес электронной почты: http://{current_site}{activation_url}'
+        message_body = f'Перейдіть за посиланням щоб підтвердити email: http://{current_site}{activation_url}'
 
         msg = EmailMessage()
         msg['From'] = from_email

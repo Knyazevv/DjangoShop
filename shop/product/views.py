@@ -1,13 +1,16 @@
-from django.shortcuts import render, get_object_or_404
-from . models import Product, Category, Basket
-from functools import wraps
 from users.models import CustomUser
+from . models import Product, Category, Basket
+from django.shortcuts import render, get_object_or_404, redirect
+from functools import wraps
 from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from product.models import Basket
+from django.db import models
+from django.core.mail import send_mail
+from email.message import EmailMessage
+import smtplib
 from django.db.models import Sum
-
-
 
 def context_data(func):
     @wraps(func)
@@ -15,6 +18,28 @@ def context_data(func):
         products = Product.objects.order_by('name')
         categories = Category.objects.order_by('name')
         user = CustomUser.objects.order_by('username')
+<<<<<<< HEAD
+        baskets = []  
+
+        if request.user.is_authenticated:  
+            baskets = Basket.objects.filter(user=request.user)
+
+        paginator = Paginator(products, 20)
+        page_number = request.GET.get('page')
+        page = paginator.get_page(page_number)        
+        
+        user = request.user if request.user.is_authenticated else None
+
+        if user:
+            total_quantity = Basket.objects.filter(user=user).aggregate(total_quantity=models.Sum('quantity'))['total_quantity']
+        else:
+            total_quantity = 0
+
+        total_sum = 0
+        for basket in baskets:
+            total_sum += basket.sum()
+
+=======
         # baskets = Basket.objects.filter(user=request.user)
         paginator = Paginator(products, 20)
         page_number = request.GET.get('page')
@@ -25,16 +50,61 @@ def context_data(func):
         # for basket in baskets:
         #     total_sum += basket.sum()
         
+>>>>>>> a4524ddd8f1b68d849e1de6698ec84c8dcfe72c5
         context = {
             "products": page,
             'categories': categories,
             'users': user,
+<<<<<<< HEAD
+            'baskets': baskets,
+            'total_sum': total_sum,
+            'total_quantity': total_quantity,
+=======
             #  'baskets': baskets,
             #  'total_sum': total_sum,
 
+>>>>>>> a4524ddd8f1b68d849e1de6698ec84c8dcfe72c5
         }
         return func(request, *args, context=context, **kwargs)
     return wrapper
+
+
+@context_data
+def checkout(request, context):
+    if request.method == 'POST':        
+        user = request.user
+        baskets = Basket.objects.filter(user=user)
+        
+        products = [basket.product.name for basket in baskets]
+        basket_sums = [basket.sum() for basket in baskets]       
+        total_sum = sum(basket_sums)
+
+               
+        from_email = 'Замовлення товару <confirmationofregistration@ukr.net>'
+        to_email = [user.email]
+        
+        message_body = ''
+        for product, basket_sum in zip(products, basket_sums):
+            message_body += f'Product : {product} Sum: {basket_sum}\n'
+        message_body += f'\nTotal Sum: {total_sum}'
+        
+        msg = EmailMessage()
+        msg['From'] = from_email
+        msg['To'] = to_email
+        msg.set_content(message_body)
+
+        server = smtplib.SMTP_SSL('smtp.ukr.net', 2525)
+        server.login("confirmationofregistration@ukr.net", "RxFucyKX5nqimoOk")
+        server.send_message(msg)
+
+        server.quit()
+        baskets.delete()
+        return redirect('index')
+    
+    return render(request, 'pages/checkout.html', context)
+
+
+
 
 
 
@@ -46,9 +116,6 @@ def index(request, context):
 def shop(request, context):
     return render(request, 'pages/shop.html', context)
 
-@context_data
-def checkout(request, context):
-    return render(request, 'pages/checkout.html', context)
 
 @context_data
 def contact(request, context):
@@ -131,3 +198,4 @@ def increase_quantity_minus(request, basket_id):
     else:
         basket.save()
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
