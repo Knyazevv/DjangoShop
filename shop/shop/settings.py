@@ -178,33 +178,10 @@ SOCIALACCOUNT_PROVIDERS = {
             'access_type': 'online'
         }
     },
-<<<<<<< HEAD
-  
-=======
-   'facebook': {
-        'SCOPE': ['email'],
-        'METHOD': 'oauth2',
-        'FIELDS': ['id', 'email', 'name'],
-        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
-        'EXCHANGE_TOKEN': True,
-        'LOCALE_FUNC': lambda request: 'uk_UA',  
-        'VERIFIED_EMAIL': False,
-        'VERSION': 'v17.0',
-       
-    },
->>>>>>> a4524ddd8f1b68d849e1de6698ec84c8dcfe72c5
-  
+
 }
 
-SOCIALACCOUNT_PROVIDERS = {
-    'facebook': {
-        'APP': {
-            'client_id': '813176067126049',
-            'secret': '95ca1e28d1f800df160d04b40d2444df',
-            'key': ''
-        }
-    }
-}
+
 
 LOGIN_URL = '/users/login/'
 LOGIN_REDIRECT_URL = '/'
