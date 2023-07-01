@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.facebook',
+   
     
 
 ]
@@ -175,8 +177,24 @@ SOCIALACCOUNT_PROVIDERS = {
         'AUTH_PARAMS': {
             'access_type': 'online'
         }
-    }
+    },
+   'facebook': {
+        'SCOPE': ['email'],
+        'METHOD': 'oauth2',
+        'FIELDS': ['id', 'email', 'name'],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'EXCHANGE_TOKEN': True,
+        'LOCALE_FUNC': lambda request: 'uk_UA',  
+        'VERIFIED_EMAIL': False,
+        'VERSION': 'v17.0',
+        'client_id': '813176067126049',
+        'client_secret': '95ca1e28d1f800df160d04b40d2444df',
+    },
+  
 }
+
+
+
 
 LOGIN_URL = '/users/login/'
 LOGIN_REDIRECT_URL = '/'

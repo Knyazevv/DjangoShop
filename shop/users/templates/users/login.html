@@ -45,6 +45,24 @@
   </head>
 
   <body>
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '813176067126049',
+          xfbml      : true,
+          version    : 'v17.0'
+        });
+        FB.AppEvents.logPageView();
+      };
+    
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "https://connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+    </script>
     <section class="vh-100 gradient-custom">
       <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
@@ -116,9 +134,12 @@
                   <div
                     class="d-flex justify-content-center text-center mt-4 pt-1"
                   >
-                    <a href="#!" class="text-white"
+                  <a href="{% provider_login_url "facebook" method="oauth2" %}" class="text-white"
                       ><i class="fab fa-facebook-f fa-lg"></i
-                    ></a>
+                    ></a> 
+
+                    {% comment %} <a href="{% provider_login_url 'facebook' %}" class="text-white"><i class="fab fa-facebook-f fa-lg"></a> {% endcomment %}
+
                     <a href="#!" class="text-white"
                       ><i class="fab fa-twitter fa-lg mx-4 px-2"></i
                     ></a>
