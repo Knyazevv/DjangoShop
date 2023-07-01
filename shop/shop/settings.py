@@ -187,13 +187,20 @@ SOCIALACCOUNT_PROVIDERS = {
         'LOCALE_FUNC': lambda request: 'uk_UA',  
         'VERIFIED_EMAIL': False,
         'VERSION': 'v17.0',
-        'client_id': '813176067126049',
-        'client_secret': '95ca1e28d1f800df160d04b40d2444df',
+       
     },
   
 }
 
-
+SOCIALACCOUNT_PROVIDERS = {
+    'facebook': {
+        'APP': {
+            'client_id': '813176067126049',
+            'secret': '95ca1e28d1f800df160d04b40d2444df',
+            'key': ''
+        }
+    }
+}
 
 
 LOGIN_URL = '/users/login/'

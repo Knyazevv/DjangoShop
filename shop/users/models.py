@@ -10,28 +10,3 @@ class CustomUser(AbstractUser):
         db_table = 'auth_user'
 
         
-# class Order(models.Model):  
-#     class Meta:
-#         db_table = "orders"
-#     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=True, null=True)
-#     product = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True, null=True)
-#     quantity = models.PositiveIntegerField(default=1)
-#     total_price =models.PositiveIntegerField(default=1)
-
-        
-    
-        
-        
-# class Order_basket(models.Model):
-#     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=True, null=True)
-#     product = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True, null=True)
-#     quantity = models.PositiveIntegerField(default=1)
-
-#     class Meta:
-#         db_table = "orders_basket"
-
-#     def delete_order_basket(self):
-#         self.delete()
-
-
-  

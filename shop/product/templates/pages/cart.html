@@ -2,7 +2,6 @@
 
 
 
-
 <!-- Breadcrumb Start -->
 <div class="container-fluid">
   <div class="row px-xl-5">
@@ -113,9 +112,12 @@
               <h5>Total</h5>
               <h5>₴ {{ total_sum }}</h5>
             </div>
-            <button class="btn btn-block btn-primary font-weight-bold my-3 py-3">
+            {% comment %} <button class="btn btn-block btn-primary font-weight-bold my-3 py-3">
               Proceed To Checkout
-            </button>
+            </button> {% endcomment %}
+            <a href="{% url 'checkout' %}" class="btn btn-block btn-primary font-weight-bold my-3 py-3">
+              Proceed To Checkout
+            </a>
           </div>
         </div>
       {% endif %}

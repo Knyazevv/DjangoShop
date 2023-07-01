@@ -52,37 +52,24 @@
               >Home</a
             >
             <a href="{% url 'shop' %}" class="nav-item nav-link">Shop</a>
-            {% comment %} <a href="{% url 'detail' %}" class="nav-item nav-link">Shop Detail</a> {% endcomment %}
+           
             <div class="nav-item dropdown">
-              <a
-                href="#"
-                class="nav-link dropdown-toggle"
-                data-toggle="dropdown">Pages <i class="fa fa-angle-down mt-1"></i
-              ></a>
-              <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
-                <a href="{% url 'cart' %}" class="dropdown-item" >Shopping Cart</a>
-                <a href="{% url 'checkout' %}" class="dropdown-item">Checkout</a>
-              </div>
+            
             </div>
             <a href="{% url 'contact' %}" class="nav-item nav-link">Contact</a>
           </div>
+
           <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
-            <a href="" class="btn px-0">
-              <i class="fas fa-heart text-primary"></i>
-              <span
-                class="badge text-secondary border border-secondary rounded-circle"
-                style="padding-bottom: 2px"
-                >0</span
-              >
+       
+
+            <a href={% url 'cart' %} class="btn px-0 ml-3">
+             
+              <i class="fas fa-shopping-cart text-primary"></i>  {% for basket in baskets %}  {{ basket.quantity }} {% endfor %}           
+            
+        
             </a>
-            <a href="" class="btn px-0 ml-3">
-              <i class="fas fa-shopping-cart text-primary"></i>
-              <span
-                class="badge text-secondary border border-secondary rounded-circle"
-                style="padding-bottom: 2px"
-                >0</span
-              >
-            </a>
+
+
           </div>
         </div>
       </nav>
