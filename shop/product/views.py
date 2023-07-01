@@ -15,22 +15,22 @@ def context_data(func):
         products = Product.objects.order_by('name')
         categories = Category.objects.order_by('name')
         user = CustomUser.objects.order_by('username')
-        baskets = Basket.objects.filter(user=request.user)
+        # baskets = Basket.objects.filter(user=request.user)
         paginator = Paginator(products, 20)
         page_number = request.GET.get('page')
         page = paginator.get_page(page_number)
         
         
-        total_sum = 0
-        for basket in baskets:
-            total_sum += basket.sum()
+        # total_sum = 0
+        # for basket in baskets:
+        #     total_sum += basket.sum()
         
         context = {
             "products": page,
             'categories': categories,
             'users': user,
-             'baskets': baskets,
-             'total_sum': total_sum,
+            #  'baskets': baskets,
+            #  'total_sum': total_sum,
 
         }
         return func(request, *args, context=context, **kwargs)
