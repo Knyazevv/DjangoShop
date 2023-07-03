@@ -37,7 +37,7 @@
 
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" id="price-1">
-                            <label class="custom-control-label" for="price-1">$0 - $100</label>
+                            <label class="custom-control-label" for="price-1">₴0 - ₴100</label>
                             {% for count in product_counts %}
                             {% if count.price_range == '0-100' %}
                             <span class="badge border font-weight-normal">{{ count.count }}</span>
@@ -47,7 +47,7 @@
 
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" id="price-2">
-                            <label class="custom-control-label" for="price-2">$100 - $200</label>
+                            <label class="custom-control-label" for="price-2">₴100 - ₴200</label>
                             {% for count in product_counts %}
                             {% if count.price_range == '100-200' %}
                             <span class="badge border font-weight-normal">{{ count.count }}</span>
@@ -57,7 +57,7 @@
 
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" id="price-3">
-                            <label class="custom-control-label" for="price-3">$200 - $300</label>
+                            <label class="custom-control-label" for="price-3">₴200 - ₴300</label>
                             {% for count in product_counts %}
                             {% if count.price_range == '200-300' %}
                             <span class="badge border font-weight-normal">{{ count.count }}</span>
@@ -67,7 +67,7 @@
 
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" id="price-4">
-                            <label class="custom-control-label" for="price-4">$300 - $400</label>
+                            <label class="custom-control-label" for="price-4">₴300 - ₴400</label>
                             {% for count in product_counts %}
                             {% if count.price_range == '300-400' %}
                             <span class="badge border font-weight-normal">{{ count.count }}</span>
@@ -78,7 +78,7 @@
 
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
                             <input type="checkbox" class="custom-control-input" id="price-5">
-                            <label class="custom-control-label" for="price-5">$400 - $10000</label>
+                            <label class="custom-control-label" for="price-5">₴400 - ₴10000</label>
                             {% for count in product_counts %}
                             {% if count.price_range == '400-10000' %}
                             <span class="badge border font-weight-normal">{{ count.count }}</span>
@@ -221,7 +221,7 @@
                                 <a class="h3 text-decoration-none text-truncate" href="{% url 'detail' product.id %}">{{product.name}}</a>
                                 <h6 class="text-muted ml-2">{{product.category}}</h6>
                                 <div class="d-flex align-items-center justify-content-center mt-2">
-                                    <h5>€{{product.price}}</h5>
+                                    <h5>₴{{product.price}}</h5>
                                     <h6 class="text-muted ml-2"></h6>
                                 </div>
                         
