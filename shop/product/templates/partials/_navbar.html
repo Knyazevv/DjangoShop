@@ -65,7 +65,7 @@
           <div class="navbar-nav ml-auto py-0 d-none d-lg-block">       
 
             <a href={% url 'cart' %} class="btn px-0 ml-3">             
-              <i class="fas fa-shopping-cart text-primary"></i>  {% for basket in baskets %}  {{ basket.quantity }} {% endfor %}        
+              <i class="fas fa-shopping-cart text-primary"></i>    {{ total_quantity }}   
             </a>
           </div>
 
