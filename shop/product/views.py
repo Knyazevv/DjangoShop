@@ -10,52 +10,141 @@ from django.db import models
 from email.message import EmailMessage
 import smtplib
 from django.db.models import Q
+from django.db.models import  Sum
+
+
+
+
+
+# def context_data(func):
+#     @wraps(func)
+#     def wrapper(request, *args, **kwargs):
+#         products = Product.objects.order_by('name')
+#         categories = Category.objects.order_by('name')
+#         user = CustomUser.objects.order_by('username')     
+
+#         baskets = []  
+
+#         if request.user.is_authenticated:  
+#             baskets = Basket.objects.filter(user=request.user)
+
+#         paginator = Paginator(products, 2)
+#         page_number = request.GET.get('page')
+#         page = paginator.get_page(page_number)        
+        
+#         user = request.user if request.user.is_authenticated else None
+
+#         if user:
+#             total_quantity = Basket.objects.filter(user=user).aggregate(total_quantity=models.Sum('quantity'))['total_quantity']
+#         else:
+#             total_quantity = 0
+
+#         total_sum = 0
+#         for basket in baskets:
+#             total_sum += basket.sum()
+
+#         # baskets = Basket.objects.filter(user=request.user)
+        
+        
+#         search_query = request.GET.get('search', '')
+
+#         if search_query:
+#          products = Product.objects.filter(
+#             Q(name__icontains=search_query) | Q(category__name__icontains=search_query)
+#         )
+#         else:
+#            products = Product.objects.all()
+
+#         context = {
+#             "products": page,
+#             'categories': categories,
+#             'users': user,
+#             'baskets': baskets,
+#             'total_sum': total_sum,
+#             'total_quantity': total_quantity,
+#             'search_query': search_query,
+#             'products': products,
+
+#         }
+#         return func(request, *args, context=context, **kwargs)
+#     return wrapper
+
+
+# ПРАЦЮЄ
+
+# def context_data(func):
+#     @wraps(func)
+#     def wrapper(request, *args, **kwargs):
+#         user = request.user if request.user.is_authenticated else None
+        
+#         search_query = request.GET.get('search', '')
+#         products = Product.objects.order_by('name')
+
+#         total_product_quantity = products.aggregate(total_product_quantity=Sum('quantity'))['total_product_quantity'] or 0
+
+#         if search_query:
+#             products = products.filter(Q(name__icontains=search_query) | Q(category__name__icontains=search_query))
+
+#         categories = Category.objects.order_by('name')
+#         baskets = Basket.objects.filter(user=user)
+#         total_quantity = baskets.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
+#         total_sum = sum(basket.sum() for basket in baskets)
+
+#         paginator = Paginator(products, 20)
+#         page_number = request.GET.get('page')
+#         page = paginator.get_page(page_number)
+
+#         context = {
+#             "products": page,
+#             'categories': categories,
+#             'users': user,
+#             'baskets': baskets,
+#             'total_sum': total_sum,
+#             'total_quantity': total_quantity,
+#             'search_query': search_query,
+#             'total_product_quantity': total_product_quantity,
+#         }
+
+#         return func(request, *args, context=context, **kwargs)
+
+#     return wrapper
+
+
+
 
 
 
 def context_data(func):
     @wraps(func)
     def wrapper(request, *args, **kwargs):
-        products = Product.objects.order_by('name')
-        categories = Category.objects.order_by('name')
-        user = CustomUser.objects.order_by('username')     
-
-        baskets = []  
-
-        if request.user.is_authenticated:  
-            baskets = Basket.objects.filter(user=request.user)
-
-        paginator = Paginator(products, 20)
-        page_number = request.GET.get('page')
-        page = paginator.get_page(page_number)        
-        
         user = request.user if request.user.is_authenticated else None
+        
+        search_query = request.GET.get('search', '')
+        products = Product.objects.order_by('name')
 
-        if user:
-            total_quantity = Basket.objects.filter(user=user).aggregate(total_quantity=models.Sum('quantity'))['total_quantity']
-        else:
-            total_quantity = 0
+        total_product_quantity = products.aggregate(total_product_quantity=Sum('quantity'))['total_product_quantity'] or 0
 
-        total_sum = 0
-        for basket in baskets:
-            total_sum += basket.sum()
+        if search_query:
+            products = products.filter(Q(name__icontains=search_query) | Q(category__name__icontains=search_query))
 
-        # baskets = Basket.objects.filter(user=request.user)
+        categories = Category.objects.order_by('name')
+        baskets = Basket.objects.filter(user=user)
+        total_quantity = baskets.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
+        total_sum = sum(basket.sum() for basket in baskets)
+
+        # Sort products by price
+        sort_by_price = request.GET.get('sort_price')
+        if sort_by_price == 'asc':
+            products = products.order_by('price')
+        elif sort_by_price == 'desc':
+            products = products.order_by('-price')
+
+        # Count products in price ranges
+        product_counts = Product.get_product_count_in_price_ranges()
+
         paginator = Paginator(products, 20)
         page_number = request.GET.get('page')
         page = paginator.get_page(page_number)
-        
-        search_query = request.GET.get('search', '')
-
-        if search_query:
-         products = Product.objects.filter(
-            Q(name__icontains=search_query) | Q(category__name__icontains=search_query)
-        )
-        else:
-          products = Product.objects.all()
-    
-    
-    
 
         context = {
             "products": page,
@@ -65,11 +154,19 @@ def context_data(func):
             'total_sum': total_sum,
             'total_quantity': total_quantity,
             'search_query': search_query,
-            'products': products,
-
+            'total_product_quantity': total_product_quantity,
+            'product_counts': product_counts,  # Add product counts to the context
         }
+
         return func(request, *args, context=context, **kwargs)
+
     return wrapper
+
+
+
+
+
+
 
 
 @context_data
@@ -114,9 +211,7 @@ def index(request, context):
 
 @context_data
 def shop(request, context):
-
-
-  
+ 
     return render(request, 'pages/shop.html', context)
 
 

@@ -4,6 +4,9 @@ from django.db.models.signals import post_migrate
 from django.apps import apps
 from django.db.models import Sum
 
+
+
+
 # python manage.py makemigrations
 # python manage.py migrate
 # python manage.py createsuperuser
@@ -24,23 +27,58 @@ class Category(models.Model):
 
 
 class Product(models.Model):
-
     class Meta:
         db_table = "products"
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.ForeignKey(Category, on_delete=models.RESTRICT)
-
+    quantity = models.IntegerField(default=0)
+    
     photo_0 = models.ImageField(upload_to="photos/%Y/%m/%d/")
     photo_1 = models.ImageField(upload_to="photos/%Y/%m/%d/", blank=True)
     photo_2 = models.ImageField(upload_to="photos/%Y/%m/%d/", blank=True)
     photo_3 = models.ImageField(upload_to="photos/%Y/%m/%d/", blank=True)
 
+    @staticmethod
+    def get_total_product_quantity():
+        total_product_quantity = Product.objects.aggregate(total=Sum('quantity'))
+        return total_product_quantity['total'] or 0
+
+       
+    @staticmethod
+    def get_product_count_in_price_ranges():
+        price_ranges = [
+            (0, 100),
+            (100, 200),
+            (200, 300),
+            (300, 400),
+            (400, 10000),
+        ]
+        product_counts = []
+        for price_range in price_ranges:
+            start_price, end_price = price_range
+            count = Product.objects.filter(price__gte=start_price, price__lt=end_price).count()
+            product_counts.append({
+                'price_range': f'{start_price}-{end_price}',
+                'count': count,
+            })
+        return product_counts
+
+    def __str__(self):
+        return f"{self.name} {self.description} {self.price} {self.category}"
+    
+    # def __str__(self):
+    #  return f"{self.name} {self.description} {self.price} {self.category}"
 
 
-def __str__(self):
-    return f"{self.name} {self.description} {self.price} {self.catedory}"
+
+
+
+
+
+
+
 
 
 class Basket(models.Model):
