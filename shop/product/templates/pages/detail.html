@@ -58,7 +58,7 @@
 
 
 
-                        <div class="hidden">
+                            <div class="hidden">
                             <div class="slike">
                             <img src="{{ apartment.photo_0.url }}" width="100%" alt="" class="small-slike">
                                                 {% if apartment.photo_1 %}
@@ -85,23 +85,8 @@
                             </div>
                             </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                         </div>
+
                     <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
                         <i class="fa fa-2x fa-angle-left text-dark"></i>
                     </a>
@@ -127,8 +112,9 @@
                         <small class="pt-1">(99 Reviews)</small>
                     </div>
                     {% if products %} 
-                    <h3 class="font-weight-semi-bold mb-4">{{products.price}}</h3>
+                    <h3 class="font-weight-semi-bold mb-4">{{products.price}} ₴</h3>
                     {% endif %}
+                    <p class="mb-4">{{products.quantity}} - штук</p>
                     <p class="mb-4">{{products.description}}</p>
             
                     

@@ -42,13 +42,14 @@ class Product(models.Model):
 
     @staticmethod
     def get_total_product_quantity():
-        total_product_quantity = Product.objects.aggregate(total=Sum('quantity'))
-        return total_product_quantity['total'] or 0
+        total_product_quantity = Product.objects.values_list('quantity', flat=True)
+        return sum(total_product_quantity)
 
        
     @staticmethod
     def get_product_count_in_price_ranges():
         price_ranges = [
+            (0, 9999999999),
             (0, 100),
             (100, 200),
             (200, 300),
@@ -67,19 +68,7 @@ class Product(models.Model):
 
     def __str__(self):
         return f"{self.name} {self.description} {self.price} {self.category}"
-    
-    # def __str__(self):
-    #  return f"{self.name} {self.description} {self.price} {self.category}"
-
-
-
-
-
-
-
-
-
-
+  
 
 class Basket(models.Model):
     user = models.ForeignKey(

@@ -6,11 +6,187 @@ from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from product.models import Basket
-from django.db import models
 from email.message import EmailMessage
 import smtplib
 from django.db.models import Q
 from django.db.models import  Sum
+
+
+
+def context_data(func):
+    @wraps(func)
+    def wrapper(request, *args, **kwargs):
+        user = request.user if request.user.is_authenticated else None
+        
+        search_query = request.GET.get('search', '')
+        products = Product.objects.order_by('name')
+
+        total_product_quantity = products.aggregate(total_product_quantity=Sum('quantity'))['total_product_quantity'] or 0
+
+        if search_query:
+            products = products.filter(Q(name__icontains=search_query) | Q(category__name__icontains=search_query))
+
+        categories = Category.objects.order_by('name')
+        baskets = Basket.objects.filter(user=user)
+        total_quantity = baskets.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
+        total_sum = sum(basket.sum() for basket in baskets)
+
+      
+        sort_by_price = request.GET.get('sort_price')
+        if sort_by_price == 'asc':
+            products = products.order_by('price')
+        elif sort_by_price == 'desc':
+            products = products.order_by('-price')
+
+    
+        product_counts = Product.get_product_count_in_price_ranges()
+
+        paginator = Paginator(products, 20)
+        page_number = request.GET.get('page')
+        page = paginator.get_page(page_number)
+
+        context = {
+            "products": page,
+            'categories': categories,
+            'users': user,
+            'baskets': baskets,
+            'total_sum': total_sum,
+            'total_quantity': total_quantity,
+            'search_query': search_query,
+            'total_product_quantity': total_product_quantity,
+            'product_counts': product_counts, 
+        }
+
+        return func(request, *args, context=context, **kwargs)
+
+    return wrapper
+
+
+@context_data
+def checkout(request, context):
+    if request.method == 'POST':        
+        user = request.user
+        baskets = Basket.objects.filter(user=user)
+        
+        products = [basket.product.name for basket in baskets]
+        basket_sums = [basket.sum() for basket in baskets]       
+        total_sum = sum(basket_sums)
+
+               
+        from_email = 'Замовлення товару <confirmationofregistration@ukr.net>'
+        to_email = [user.email]
+        
+        message_body = ''
+        for product, basket_sum in zip(products, basket_sums):
+            message_body += f'Product : {product} Sum: {basket_sum}\n'
+        message_body += f'\nTotal Sum: {total_sum}'
+        
+        msg = EmailMessage()
+        msg['From'] = from_email
+        msg['To'] = to_email
+        msg.set_content(message_body)
+
+        server = smtplib.SMTP_SSL('smtp.ukr.net', 2525)
+        server.login("confirmationofregistration@ukr.net", "RxFucyKX5nqimoOk")
+        server.send_message(msg)
+
+        server.quit()
+        baskets.delete()
+        return redirect('index')
+    
+    return render(request, 'pages/checkout.html', context)
+
+
+@context_data
+def index(request, context):
+    return render(request, 'pages/index.html', context)
+
+
+@context_data
+def shop(request, context):
+ 
+    return render(request, 'pages/shop.html', context)
+
+
+@context_data
+def contact(request, context):
+    return render(request, 'pages/contact.html', context)
+
+
+@context_data
+def products_by_category(request, category_id, context):
+    category = get_object_or_404(Category, id=category_id)
+    products = Product.objects.filter(category=category).order_by('name')
+    categories = Category.objects.order_by('name')
+    
+    context = {
+        'category': category,
+        'categories':categories,
+        'products': products,
+    }
+    return render(request, 'pages/products_by_category.html', context)
+
+
+@context_data
+def detail(request, product_id ,context):
+    products = get_object_or_404(Product, id=product_id)      
+    categories = Category.objects.order_by('name')
+    context = {       
+        'categories':categories,
+        'products': products,
+    }
+    return render(request, 'pages/detail.html', context)
+
+
+@login_required
+def cart(request):
+    baskets = Basket.objects.filter(user=request.user)
+    total_sum = 0
+
+    for basket in baskets:
+        total_sum += basket.sum()
+
+    context = {
+        'baskets': baskets,
+        'total_sum': total_sum,
+    }
+    return render(request, 'pages/cart.html', context)
+
+
+@login_required
+def add_to_cart(request, product_id):
+    Basket.create_or_update(product_id, request.user)
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+@login_required
+def remove_from_card(request, basket_id):
+    basket = Basket.objects.get(id=basket_id)
+    basket.delete()
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+@login_required
+def increase_quantity(request, basket_id):
+        basket = Basket.objects.get(id=basket_id)
+        basket.quantity += 1
+        basket.save()
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+@login_required
+def increase_quantity_minus(request, basket_id):
+    basket = Basket.objects.get(id=basket_id)
+    basket.quantity -= 1
+    if basket.quantity == 0:
+        basket.delete()
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    else:
+        basket.save()
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+
 
 
 
@@ -108,195 +284,3 @@ from django.db.models import  Sum
 #         return func(request, *args, context=context, **kwargs)
 
 #     return wrapper
-
-
-
-
-
-
-def context_data(func):
-    @wraps(func)
-    def wrapper(request, *args, **kwargs):
-        user = request.user if request.user.is_authenticated else None
-        
-        search_query = request.GET.get('search', '')
-        products = Product.objects.order_by('name')
-
-        total_product_quantity = products.aggregate(total_product_quantity=Sum('quantity'))['total_product_quantity'] or 0
-
-        if search_query:
-            products = products.filter(Q(name__icontains=search_query) | Q(category__name__icontains=search_query))
-
-        categories = Category.objects.order_by('name')
-        baskets = Basket.objects.filter(user=user)
-        total_quantity = baskets.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
-        total_sum = sum(basket.sum() for basket in baskets)
-
-        # Sort products by price
-        sort_by_price = request.GET.get('sort_price')
-        if sort_by_price == 'asc':
-            products = products.order_by('price')
-        elif sort_by_price == 'desc':
-            products = products.order_by('-price')
-
-        # Count products in price ranges
-        product_counts = Product.get_product_count_in_price_ranges()
-
-        paginator = Paginator(products, 20)
-        page_number = request.GET.get('page')
-        page = paginator.get_page(page_number)
-
-        context = {
-            "products": page,
-            'categories': categories,
-            'users': user,
-            'baskets': baskets,
-            'total_sum': total_sum,
-            'total_quantity': total_quantity,
-            'search_query': search_query,
-            'total_product_quantity': total_product_quantity,
-            'product_counts': product_counts,  # Add product counts to the context
-        }
-
-        return func(request, *args, context=context, **kwargs)
-
-    return wrapper
-
-
-
-
-
-
-
-
-@context_data
-def checkout(request, context):
-    if request.method == 'POST':        
-        user = request.user
-        baskets = Basket.objects.filter(user=user)
-        
-        products = [basket.product.name for basket in baskets]
-        basket_sums = [basket.sum() for basket in baskets]       
-        total_sum = sum(basket_sums)
-
-               
-        from_email = 'Замовлення товару <confirmationofregistration@ukr.net>'
-        to_email = [user.email]
-        
-        message_body = ''
-        for product, basket_sum in zip(products, basket_sums):
-            message_body += f'Product : {product} Sum: {basket_sum}\n'
-        message_body += f'\nTotal Sum: {total_sum}'
-        
-        msg = EmailMessage()
-        msg['From'] = from_email
-        msg['To'] = to_email
-        msg.set_content(message_body)
-
-        server = smtplib.SMTP_SSL('smtp.ukr.net', 2525)
-        server.login("confirmationofregistration@ukr.net", "RxFucyKX5nqimoOk")
-        server.send_message(msg)
-
-        server.quit()
-        baskets.delete()
-        return redirect('index')
-    
-    return render(request, 'pages/checkout.html', context)
-
-
-@context_data
-def index(request, context):
-    return render(request, 'pages/index.html', context)
-
-
-@context_data
-def shop(request, context):
- 
-    return render(request, 'pages/shop.html', context)
-
-
-
-
-
-@context_data
-def contact(request, context):
-    return render(request, 'pages/contact.html', context)
-
-
-
-
-@context_data
-def products_by_category(request, category_id, context):
-    category = get_object_or_404(Category, id=category_id)
-    products = Product.objects.filter(category=category).order_by('name')
-    categories = Category.objects.order_by('name')
-    
-    context = {
-        'category': category,
-        'categories':categories,
-        'products': products,
-    }
-    return render(request, 'pages/products_by_category.html', context)
-
-
-@context_data
-def detail(request, product_id ,context):
-    products = get_object_or_404(Product, id=product_id)      
-    categories = Category.objects.order_by('name')
-    context = {       
-        'categories':categories,
-        'products': products,
-    }
-    return render(request, 'pages/detail.html', context)
-
-
-
-
-@login_required
-def cart(request):
-    baskets = Basket.objects.filter(user=request.user)
-    total_sum = 0
-
-    for basket in baskets:
-        total_sum += basket.sum()
-
-    context = {
-        'baskets': baskets,
-        'total_sum': total_sum,
-    }
-    return render(request, 'pages/cart.html', context)
-
-
-@login_required
-def add_to_cart(request, product_id):
-    Basket.create_or_update(product_id, request.user)
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
-
-
-
-@login_required
-def remove_from_card(request, basket_id):
-    basket = Basket.objects.get(id=basket_id)
-    basket.delete()
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
-
-
-@login_required
-def increase_quantity(request, basket_id):
-        basket = Basket.objects.get(id=basket_id)
-        basket.quantity += 1
-        basket.save()
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
-
-
-@login_required
-def increase_quantity_minus(request, basket_id):
-    basket = Basket.objects.get(id=basket_id)
-    basket.quantity -= 1
-    if basket.quantity == 0:
-        basket.delete()
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
-    else:
-        basket.save()
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
-
