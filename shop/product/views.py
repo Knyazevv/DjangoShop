@@ -7,17 +7,18 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from product.models import Basket
 from django.db import models
-from django.core.mail import send_mail
 from email.message import EmailMessage
 import smtplib
-from django.db.models import Sum
+from django.db.models import Q
+
+
 
 def context_data(func):
     @wraps(func)
     def wrapper(request, *args, **kwargs):
         products = Product.objects.order_by('name')
         categories = Category.objects.order_by('name')
-        user = CustomUser.objects.order_by('username')
+        user = CustomUser.objects.order_by('username')     
 
         baskets = []  
 
@@ -39,28 +40,32 @@ def context_data(func):
         for basket in baskets:
             total_sum += basket.sum()
 
-
         # baskets = Basket.objects.filter(user=request.user)
         paginator = Paginator(products, 20)
         page_number = request.GET.get('page')
         page = paginator.get_page(page_number)
         
-        
-        # total_sum = 0
-        # for basket in baskets:
-        #     total_sum += basket.sum()
+        search_query = request.GET.get('search', '')
+
+        if search_query:
+         products = Product.objects.filter(
+            Q(name__icontains=search_query) | Q(category__name__icontains=search_query)
+        )
+        else:
+          products = Product.objects.all()
+    
+    
+    
 
         context = {
             "products": page,
             'categories': categories,
             'users': user,
-
             'baskets': baskets,
             'total_sum': total_sum,
             'total_quantity': total_quantity,
-
-            #  'baskets': baskets,
-            #  'total_sum': total_sum,
+            'search_query': search_query,
+            'products': products,
 
         }
         return func(request, *args, context=context, **kwargs)
@@ -106,9 +111,16 @@ def checkout(request, context):
 def index(request, context):
     return render(request, 'pages/index.html', context)
 
+
 @context_data
 def shop(request, context):
+
+
+  
     return render(request, 'pages/shop.html', context)
+
+
+
 
 
 @context_data

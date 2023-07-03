@@ -181,7 +181,7 @@
     <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
 
      
-      <a class="text-decoration-none" href="">
+      <a class="text-decoration-none" href="{% url 'products_by_category' category.id %}">
        
         
         {% comment %} <a href="{% url 'cart' product.id %}" class="nav-item nav-link">{{ product.name }}</a> {% endcomment %}
@@ -385,24 +385,3 @@
   </div>
 </div>
 
-<script>
-  window.fbAsyncInit = function() {
-    FB.init({
-      appId      : '{your-app-id}',
-      cookie     : true,
-      xfbml      : true,
-      version    : '{api-version}'
-    });
-      
-    FB.AppEvents.logPageView();   
-      
-  };
-
-  (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "https://connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
-</script>
