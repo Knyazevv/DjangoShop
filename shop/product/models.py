@@ -121,3 +121,5 @@ class Basket(models.Model):
     def get_total_quantity(self):
         total_quantity = Basket.objects.filter(user=self.user).aggregate(total_quantity=Sum('quantity'))['total_quantity']
         return total_quantity if total_quantity else 0
+    
+ 
