@@ -10,7 +10,7 @@ urlpatterns = [
     path('baskets/remove/<int:basket_id>/', remove_from_card, name='remove_from_card'),
     path('baskets/increase_quantity/<int:basket_id>/', increase_quantity, name='increase_quantity'),
     path('baskets/increase_quantity_minus/<int:basket_id>/', increase_quantity_minus, name='increase_quantity_minus'),
- 
+
     
 ]
 

@@ -1,4 +1,6 @@
 {% extends 'base.html' %} 
+
+
 {% block content %}
 
     <!-- Breadcrumb Start -->
@@ -14,7 +16,7 @@
         </div>
     </div>
     <!-- Breadcrumb End -->
-
+    
 
     <!-- Shop Start -->
     <div class="container-fluid">
@@ -35,7 +37,22 @@
                             {% endfor %}
                         </div>
 
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+
+
+
+                    <div>
+                        <form action="{% url 'shop' %}">
+                            <form method="GET" action="/search">                               
+                                <input type="number" name="price_from" placeholder="Ціна від" value="0">
+                                <input type="number" name="price_to" placeholder="Ціна до" value="10000">
+                                <button type="submit">Пошук</button>
+                              </form>
+                        </form>
+                    </div>
+
+
+
+                        {% comment %} <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" id="price-1">
                             <label class="custom-control-label" for="price-1">₴0 - ₴100</label>
                             {% for count in product_counts %}
@@ -84,7 +101,16 @@
                             <span class="badge border font-weight-normal">{{ count.count }}</span>
                             {%endif%}
                             {% endfor %}
-                        </div>
+                        </div> {% endcomment %}
+
+
+
+
+
+
+
+
+
                         
                     </form>
                 </div>

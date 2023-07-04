@@ -1,9 +1,8 @@
-from users.models import CustomUser
 from . models import Product, Category, Basket
 from django.shortcuts import render, get_object_or_404, redirect
 from functools import wraps
 from django.core.paginator import Paginator
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from product.models import Basket
 from email.message import EmailMessage
@@ -11,6 +10,59 @@ import smtplib
 from django.db.models import Q
 from django.db.models import  Sum
 
+from .models import Product
+
+# def context_data(func):
+#     @wraps(func)
+#     def wrapper(request, *args, **kwargs):
+#         user = request.user if request.user.is_authenticated else None
+        
+#         search_query = request.GET.get('search', '')
+#         products = Product.objects.order_by('name')
+
+#         total_product_quantity = products.aggregate(total_product_quantity=Sum('quantity'))['total_product_quantity'] or 0
+
+#         if search_query:
+#             products = products.filter(Q(name__icontains=search_query) | Q(category__name__icontains=search_query))
+#         else:
+#             price_range = search_query.split("-")
+#             price_from = price_range[0]
+#             price_to = price_range[1]
+#             products = products.filter(price__gte=price_from, price__lte=price_to)
+#         categories = Category.objects.order_by('name')
+#         baskets = Basket.objects.filter(user=user)
+#         total_quantity = baskets.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
+#         total_sum = sum(basket.sum() for basket in baskets)
+
+      
+#         sort_by_price = request.GET.get('sort_price')
+#         if sort_by_price == 'asc':
+#             products = products.order_by('price')
+#         elif sort_by_price == 'desc':
+#             products = products.order_by('-price')
+
+    
+#         product_counts = Product.get_product_count_in_price_ranges()
+
+#         paginator = Paginator(products, 20)
+#         page_number = request.GET.get('page')
+#         page = paginator.get_page(page_number)
+
+#         context = {
+#             "products": page,
+#             'categories': categories,
+#             'users': user,
+#             'baskets': baskets,
+#             'total_sum': total_sum,
+#             'total_quantity': total_quantity,
+#             'search_query': search_query,
+#             'total_product_quantity': total_product_quantity,
+#             'product_counts': product_counts, 
+#         }
+
+#         return func(request, *args, context=context, **kwargs)
+
+#     return wrapper
 
 
 def context_data(func):
@@ -25,7 +77,24 @@ def context_data(func):
 
         if search_query:
             products = products.filter(Q(name__icontains=search_query) | Q(category__name__icontains=search_query))
+        else:
+            price_from = request.GET.get('price_from')
+            price_to = request.GET.get('price_to')
 
+            if price_from and price_to:
+                try:
+                    price_from = float(price_from)
+                    price_to = float(price_to)
+                    products = products.filter(price__gte=price_from, price__lte=price_to)
+                except ValueError:
+                    # Обробка некоректних значень price_from або price_to
+                    # Якщо введені значення не є числами
+                    error_message = "Введіть коректні числові значення для ціни."
+                    # Додайте відповідну обробку помилок або повідомлення для користувача
+                    return HttpResponse(error_message)
+            
+            
+            
         categories = Category.objects.order_by('name')
         baskets = Basket.objects.filter(user=user)
         total_quantity = baskets.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
@@ -60,6 +129,15 @@ def context_data(func):
         return func(request, *args, context=context, **kwargs)
 
     return wrapper
+
+
+
+
+
+
+
+
+
 
 
 @context_data
@@ -184,6 +262,7 @@ def increase_quantity_minus(request, basket_id):
     else:
         basket.save()
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
 
 
 
