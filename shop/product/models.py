@@ -122,4 +122,11 @@ class Basket(models.Model):
         total_quantity = Basket.objects.filter(user=self.user).aggregate(total_quantity=Sum('quantity'))['total_quantity']
         return total_quantity if total_quantity else 0
     
- 
+
+class ContactFormEntry(models.Model):
+    class Meta:
+        db_table = "contact_form"
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    subject = models.CharField(max_length=100)
+    message = models.TextField()

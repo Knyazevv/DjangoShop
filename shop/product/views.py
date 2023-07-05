@@ -9,6 +9,7 @@ from email.message import EmailMessage
 import smtplib
 from django.db.models import Q
 from django.db.models import  Sum
+from .models import ContactFormEntry
 
 from .models import Product
 
@@ -186,9 +187,9 @@ def shop(request, context):
     return render(request, 'pages/shop.html', context)
 
 
-@context_data
-def contact(request, context):
-    return render(request, 'pages/contact.html', context)
+# @context_data
+# def contact(request, context):
+#     return render(request, 'pages/contact.html', context)
 
 
 @context_data
@@ -264,6 +265,26 @@ def increase_quantity_minus(request, basket_id):
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
+
+# @context_data
+def contact(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+        print(name, email, subject, message)
+        entry = ContactFormEntry(name=name, email=email, subject=subject, message=message)
+        
+        try:
+            entry.save()
+        except Exception as e:
+            # Обробка помилки
+            print(e)
+        
+        return redirect('index')
+    
+    return render(request, 'pages/contact.html')
 
 
 
