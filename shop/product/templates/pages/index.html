@@ -1,5 +1,12 @@
 {% extends 'base.html' %} {% block content %}
 
+
+
+
+
+
+
+
 <!-- Carousel Start -->
 <div class="container-fluid mb-3">
   <div class="row px-xl-5">
@@ -200,7 +207,7 @@
     <!-- Categories End -->
 
     <!-- Products Start -->
-    <div class="container-fluid pt-5 pb-3">
+    {% comment %} <div class="container-fluid pt-5 pb-3">
       <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4">
         <span class="bg-secondary pr-3">Featured Products</span>
       </h2>
@@ -211,7 +218,7 @@
           <div class="product-item bg-light mb-4">
             <div class="product-img position-relative overflow-hidden">
               
-              {% comment %} <img class="img-fluid w-100" src="/static/img/product-1.jpg" alt=""/> {% endcomment %}
+             
                 <div>                 
                   <img class="w-100 h-100"  src="{{product.photo_0.url}}" alt="Image">                  
                 </div>
@@ -257,7 +264,7 @@
           </div>
         </div>
         {% endfor %} {% endif %}
-      </div>
+      </div> {% endcomment %}
       <!-- Products End -->
 
       <!-- Offer Start -->
@@ -286,21 +293,24 @@
         </div>
       </div>
       <!-- Offer End -->
-
+  
       <!-- Products Start -->
       <div class="container-fluid pt-5 pb-3">
         <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4">
           <span class="bg-secondary pr-3">Recent Products</span>
         </h2>
 
+        
+ 
+
+
         <div class="row px-xl-5">
-          {% if products %}
-          {% for product in products %}
+          {% for user_history in user_histories %}
           <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
             <div class="product-item bg-light mb-4">
               <div class="product-img position-relative overflow-hidden">
                 <div>                 
-                  <img class="w-100 h-100"  src="{{product.photo_0.url}}" alt="Image">                  
+                  <img class="w-100 h-100"  src="{{ user_history.product.photo_0.url}}" alt="Image">                  
                 </div>
                 <div class="product-action">
                   <a class="btn btn-outline-dark btn-square" href=""
@@ -319,12 +329,12 @@
               </div>
               <div class="text-center py-4">
                 <a class="h6 text-decoration-none text-truncate" href=""
-                  >{{product.name}}</a
+                  >{{user_history.product..name}}</a
                 >
                 <div
                   class="d-flex align-items-center justify-content-center mt-2"
                 >
-                  <h5>{{product.price}}</h5>
+                  <h5>{{user_history.product.price}}</h5>
                   <h6 class="text-muted ml-2"><del>{{product.price}}</del></h6>
                 </div>
                 <div
@@ -341,7 +351,7 @@
             </div>
           </div>
           {% endfor %} 
-          {% endif %}
+          {% comment %} {% endif %} {% endcomment %}
         </div>
         <!-- Products End -->
 

@@ -15,7 +15,7 @@ from email.message import EmailMessage
 import smtplib
 from django.contrib.auth.decorators import login_required
 from .forms import UserEditForm, UserLoginForm, UserRegisterForm
-
+from product.models import UserHistory
 
 User = get_user_model()
 
@@ -158,9 +158,6 @@ def seller_profile(request, id):
     return render(request, 'users/sellerprofile.html', context)
 
 
-
-
-
 def login_view(request):
     if request.method == 'POST':
         form = UserLoginForm(request, data=request.POST)
@@ -170,6 +167,6 @@ def login_view(request):
 
     else:
         form = UserLoginForm(request)
-
+    
     context = {'form': form}
     return render(request, 'login.html', context)

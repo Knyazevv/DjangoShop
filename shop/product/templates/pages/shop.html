@@ -244,7 +244,11 @@
                             </div>
                         
                             <div class="text-center py-4">
-                                <a class="h3 text-decoration-none text-truncate" href="{% url 'detail' product.id %}">{{product.name}}</a>
+                              {% comment %} <a class="h3 text-decoration-none text-truncate" href="{% url 'detail' product.id %}">{{product.name}}</a>  {% endcomment %}
+                              <a class="h3 text-decoration-none text-truncate" href="{% url 'products:detail' product.id %}">{{ product.name }}</a>
+
+
+                            
                                 <h6 class="text-muted ml-2">{{product.category}}</h6>
                                 <div class="d-flex align-items-center justify-content-center mt-2">
                                     <h5>₴{{product.price}}</h5>

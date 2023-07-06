@@ -130,3 +130,34 @@ class ContactFormEntry(models.Model):
     email = models.EmailField()
     subject = models.CharField(max_length=100)
     message = models.TextField()
+    
+    
+    
+    
+    
+    
+class UserHistory(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+   
+
+    @classmethod
+    def create_or_update(cls, product_id, user):
+        baskets = UserHistory.objects.filter(user=user, product_id=product_id)
+
+        if not baskets.exists():
+            obj = UserHistory.objects.create(
+                user=user, product_id=product_id)
+            is_created = True
+            return obj, is_created
+        else:
+            basket = baskets.first()        
+            basket.save()
+            is_created = False
+            return basket, is_created
+
+    def __str__(self):
+        return f'{self.user.username} - {self.product.name}'
+
+
