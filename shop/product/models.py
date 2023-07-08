@@ -50,11 +50,7 @@ class Product(models.Model):
     def get_product_count_in_price_ranges():
         price_ranges = [
             (0, 9999999999),
-            (0, 100),
-            (100, 200),
-            (200, 300),
-            (300, 400),
-            (400, 10000),
+          
         ]
         product_counts = []
         for price_range in price_ranges:
