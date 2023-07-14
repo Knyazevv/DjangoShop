@@ -33,10 +33,7 @@
           </tr>
         </thead>
         <tbody class="align-middle">
-          {% for basket in baskets %}
-        
-
-         
+          {% for basket in baskets %}     
             <tr>
             <td class="align-middle">
               <img
@@ -50,12 +47,9 @@
             <td class="align-middle">
               <div class="input-group quantity mx-auto" style="width: 100px">
                 <div class="input-group-btn">
-
-
                   <a href="{% url 'products:increase_quantity_minus' basket.id %}" class="btn btn-sm btn-primary btn-minus">
                     <i class="fa fa-minus"></i>
                 </a>
-                  
                 </div>
                 <input
                   type="text"
@@ -68,8 +62,6 @@
                     <i class="fa fa-plus"></i>
                   </a>
                 
-                  
-
                 </div>
               </div>
             </td>
